@@ -27,11 +27,11 @@ package {
       stage.align = StageAlign.TOP_LEFT;
       stage.scaleMode = StageScaleMode.NO_SCALE;
 
-      posterUrl = loaderInfo.parameters.poster;
+      //posterUrl = loaderInfo.parameters['poster'];
       videoUrl = loaderInfo.parameters.video;
 
       setBackgroundColor();
-      loadPoster();
+      //if (posterUrl) loadPoster();
       loadVideo();
     }
 
@@ -70,7 +70,7 @@ package {
       video = new Video(stage.stageWidth, stage.stageHeight);
       addChild(video);
 
-      posterContainer.visible = false;
+      //posterContainer.visible = false;
 
       stream = new NetStream(connection);
       stream.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
