@@ -5,32 +5,43 @@ package {
   import flash.display.StageAlign;
   import flash.display.StageScaleMode;
   import flash.events.Event;
+  import flash.events.NetStatusEvent;
   import flash.media.Video;
-  import flash.text.TextField;
   import flash.net.NetConnection;
   import flash.net.NetStream;
   import flash.net.URLRequest;
-  import flash.events.NetStatusEvent;
 
   public class Player extends Sprite {
 
-    private var position: uint = 0;
+    private var posterUrl: String;
+    private var videoUrl: String;
 
-    private var posterContainer: Sprite;
     private var poster: Loader;
     private var video: Video;
+    private var posterContainer: Sprite;
 
     private var connection: NetConnection;
+    private var stream: NetStream;
 
     public function Player() {
       stage.align = StageAlign.TOP_LEFT;
       stage.scaleMode = StageScaleMode.NO_SCALE;
 
-      loadPoster(loaderInfo.parameters.poster);
-      loadVideo(loaderInfo.parameters.video);
+      posterUrl = loaderInfo.parameters.poster;
+      videoUrl = loaderInfo.parameters.video;
+
+      setBackgroundColor();
+      loadPoster();
+      loadVideo();
     }
 
-    private function loadPoster(url: String): void {
+    private function setBackgroundColor(): void {
+      graphics.beginFill(0x000000, 1);
+      graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+      graphics.endFill();
+    }
+
+    private function loadPoster(): void {
       posterContainer = new Sprite();
       addChild(posterContainer);
 
@@ -38,10 +49,11 @@ package {
       poster.contentLoaderInfo.addEventListener(Event.COMPLETE, function(): void {
         posterContainer.addChild(poster);
       });
-      poster.load(new URLRequest(url));
+
+      poster.load(new URLRequest(posterUrl));
     }
 
-    private function loadVideo(url: String): void {
+    private function loadVideo(): void {
       connection = new NetConnection();
       connection.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
       connection.connect(null);
@@ -60,11 +72,11 @@ package {
 
       posterContainer.visible = false;
 
-      var stream: NetStream = new NetStream(connection);
+      stream = new NetStream(connection);
       stream.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
       video.attachNetStream(stream);
 
-      stream.play(loaderInfo.parameters.video);
+      stream.play(videoUrl);
     }
 
   }
