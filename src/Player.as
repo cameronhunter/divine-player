@@ -11,6 +11,7 @@ package {
   import flash.net.NetStream;
   import flash.net.URLRequest;
 
+  // TODO: Add external interface for play, pause, mute and unmute
   public class Player extends Sprite {
 
     private var posterUrl: String;
