@@ -121,6 +121,7 @@ package {
       addChildAt(video, 1);
 
       stream = new NetStream(connection);
+      stream.bufferTime = 0.5;
       stream.soundTransform = new SoundTransform(muted ? 0 : 1);
       stream.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
       video.attachNetStream(stream);
