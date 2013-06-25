@@ -13,14 +13,14 @@ package {
   import flash.net.NetStream;
   import flash.net.URLRequest;
   import flash.system.Security;
-  import flash.text.TextField;
 
   public class Player extends Sprite {
 
     private var posterUrl: String;
     private var videoUrl: String;
+    private var loop: Boolean;
     private var muted: Boolean;
-    private var autoPlay: Boolean;
+    private var autoplay: Boolean;
 
     private var videoPlaying: Boolean;
 
@@ -42,8 +42,9 @@ package {
 
       posterUrl = loaderInfo.parameters.poster;
       videoUrl = loaderInfo.parameters.video;
+      loop = loaderInfo.parameters.loop == "true";
       muted = loaderInfo.parameters.muted == "true";
-      autoPlay = loaderInfo.parameters.autoPlay == "true";
+      autoplay = loaderInfo.parameters.autoplay == "true";
 
       setBackgroundColor();
 
@@ -80,12 +81,6 @@ package {
       return stream.soundTransform.volume == 0;
     }
 
-    private function setBackgroundColor(): void {
-      graphics.beginFill(0x000000, 1);
-      graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
-      graphics.endFill();
-    }
-
     private function registerExternalMethods(): void {
       ExternalInterface.addCallback("play", play);
       ExternalInterface.addCallback("pause", pause);
@@ -94,6 +89,12 @@ package {
       ExternalInterface.addCallback("unmute", unmute);
       ExternalInterface.addCallback("muted", isMuted);
       ExternalInterface.call("DivineVideoPlayer.ready");
+    }
+
+    private function setBackgroundColor(): void {
+      graphics.beginFill(0x000000, 1);
+      graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+      graphics.endFill();
     }
 
     private function loadPoster(): void {
@@ -119,7 +120,7 @@ package {
     private function netStatusHandler(event: NetStatusEvent): void {
       switch (event.info.code) {
         case "NetConnection.Connect.Success": connectStream(); break;
-        case "NetStream.Play.StreamNotFound": break;
+        case "NetStream.Play.Stop": if (loop) stream.seek(0); break;
       }
     }
 
@@ -127,15 +128,13 @@ package {
       video = new Video(stage.stageWidth, stage.stageHeight);
       addChild(video);
 
-      //posterContainer.visible = false;
-
       stream = new NetStream(connection);
       stream.soundTransform = new SoundTransform(muted ? 0 : 1);
       stream.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
       video.attachNetStream(stream);
 
       stream.play(videoUrl);
-      if (!autoPlay) pause();
+      if (!autoplay) pause();
     }
 
   }
