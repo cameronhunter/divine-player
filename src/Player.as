@@ -7,6 +7,7 @@ package {
   import flash.events.Event;
   import flash.events.NetStatusEvent;
   import flash.external.ExternalInterface;
+  import flash.media.SoundTransform;
   import flash.media.Video;
   import flash.net.NetConnection;
   import flash.net.NetStream;
@@ -14,11 +15,14 @@ package {
   import flash.system.Security;
   import flash.text.TextField;
 
-  // TODO: Add external interface for play, pause, mute and unmute
   public class Player extends Sprite {
 
     private var posterUrl: String;
     private var videoUrl: String;
+    private var muted: Boolean;
+    private var autoPlay: Boolean;
+
+    private var videoPlaying: Boolean;
 
     private var poster: Loader;
     private var video: Video;
@@ -34,17 +38,46 @@ package {
       Security.allowDomain("*");
       Security.allowInsecureDomain("*");
 
-      var field: TextField = new TextField();
-      field.text = ExternalInterface.available ? "Available" : "Unavailable";
-      addChild(field);
-
-      //posterUrl = loaderInfo.parameters['poster'];
-      videoUrl = loaderInfo.parameters.video;
-
-      //setBackgroundColor();
       registerExternalMethods();
-      //if (posterUrl) loadPoster();
-      //loadVideo();
+
+      posterUrl = loaderInfo.parameters.poster;
+      videoUrl = loaderInfo.parameters.video;
+      muted = loaderInfo.parameters.muted == "true";
+      autoPlay = loaderInfo.parameters.autoPlay == "true";
+
+      setBackgroundColor();
+
+      if (posterUrl) {
+        loadPoster();
+      }
+
+      loadVideo();
+    }
+
+    private function play(): void {
+      videoPlaying = true;
+      stream.resume();
+    }
+
+    private function pause(): void {
+      videoPlaying = false;
+      stream.pause();
+    }
+
+    private function isPaused(): Boolean {
+      return !videoPlaying;
+    }
+
+    private function mute(): void {
+      stream.soundTransform = new SoundTransform(0);
+    }
+
+    private function unmute(): void {
+      stream.soundTransform = new SoundTransform(1);
+    }
+
+    private function isMuted(): Boolean {
+      return stream.soundTransform.volume == 0;
     }
 
     private function setBackgroundColor(): void {
@@ -54,13 +87,12 @@ package {
     }
 
     private function registerExternalMethods(): void {
-      ExternalInterface.addCallback("foo", function(): void {
-        var field: TextField = new TextField();
-        field.text = "BAR!";
-        field.y = 15;
-        addChild(field);
-      });
-
+      ExternalInterface.addCallback("play", play);
+      ExternalInterface.addCallback("pause", pause);
+      ExternalInterface.addCallback("paused", isPaused);
+      ExternalInterface.addCallback("mute", mute);
+      ExternalInterface.addCallback("unmute", unmute);
+      ExternalInterface.addCallback("muted", isMuted);
       ExternalInterface.call("DivineVideoPlayer.ready");
     }
 
@@ -69,6 +101,8 @@ package {
       addChild(posterContainer);
 
       poster = new Loader();
+      poster.width = stage.stageWidth;
+      poster.height = stage.stageHeight;
       poster.contentLoaderInfo.addEventListener(Event.COMPLETE, function(): void {
         posterContainer.addChild(poster);
       });
@@ -96,10 +130,12 @@ package {
       //posterContainer.visible = false;
 
       stream = new NetStream(connection);
+      stream.soundTransform = new SoundTransform(muted ? 0 : 1);
       stream.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
       video.attachNetStream(stream);
 
       stream.play(videoUrl);
+      if (!autoPlay) pause();
     }
 
   }
