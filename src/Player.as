@@ -6,10 +6,13 @@ package {
   import flash.display.StageScaleMode;
   import flash.events.Event;
   import flash.events.NetStatusEvent;
+  import flash.external.ExternalInterface;
   import flash.media.Video;
   import flash.net.NetConnection;
   import flash.net.NetStream;
   import flash.net.URLRequest;
+  import flash.system.Security;
+  import flash.text.TextField;
 
   // TODO: Add external interface for play, pause, mute and unmute
   public class Player extends Sprite {
@@ -28,18 +31,37 @@ package {
       stage.align = StageAlign.TOP_LEFT;
       stage.scaleMode = StageScaleMode.NO_SCALE;
 
+      Security.allowDomain("*");
+      Security.allowInsecureDomain("*");
+
+      var field: TextField = new TextField();
+      field.text = ExternalInterface.available ? "Available" : "Unavailable";
+      addChild(field);
+
       //posterUrl = loaderInfo.parameters['poster'];
       videoUrl = loaderInfo.parameters.video;
 
-      setBackgroundColor();
+      //setBackgroundColor();
+      registerExternalMethods();
       //if (posterUrl) loadPoster();
-      loadVideo();
+      //loadVideo();
     }
 
     private function setBackgroundColor(): void {
       graphics.beginFill(0x000000, 1);
       graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
       graphics.endFill();
+    }
+
+    private function registerExternalMethods(): void {
+      ExternalInterface.addCallback("foo", function(): void {
+        var field: TextField = new TextField();
+        field.text = "BAR!";
+        field.y = 15;
+        addChild(field);
+      });
+
+      ExternalInterface.call("DivineVideoPlayer.ready");
     }
 
     private function loadPoster(): void {
