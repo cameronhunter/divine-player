@@ -14,6 +14,7 @@ package {
   import flash.net.URLRequest;
   import flash.system.Security;
 
+  [SWF(backgroundColor="0x000000")]
   public class Player extends Sprite {
 
     private var posterUrl: String;
@@ -45,8 +46,6 @@ package {
       loop = loaderInfo.parameters.loop == "true";
       muted = loaderInfo.parameters.muted == "true";
       autoplay = loaderInfo.parameters.autoplay == "true";
-
-      setBackgroundColor();
 
       if (posterUrl) {
         loadPoster();
@@ -88,22 +87,15 @@ package {
       ExternalInterface.addCallback("mute", mute);
       ExternalInterface.addCallback("unmute", unmute);
       ExternalInterface.addCallback("muted", isMuted);
-      ExternalInterface.call("DivineVideoPlayer.ready");
-    }
-
-    private function setBackgroundColor(): void {
-      graphics.beginFill(0x000000, 1);
-      graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
-      graphics.endFill();
     }
 
     private function loadPoster(): void {
       posterContainer = new Sprite();
-      addChild(posterContainer);
+      posterContainer.width = stage.stageWidth;
+      posterContainer.height = stage.stageHeight;
+      addChildAt(posterContainer, 0);
 
       poster = new Loader();
-      poster.width = stage.stageWidth;
-      poster.height = stage.stageHeight;
       poster.contentLoaderInfo.addEventListener(Event.COMPLETE, function(): void {
         posterContainer.addChild(poster);
       });
@@ -126,7 +118,7 @@ package {
 
     private function connectStream(): void {
       video = new Video(stage.stageWidth, stage.stageHeight);
-      addChild(video);
+      addChildAt(video, 1);
 
       stream = new NetStream(connection);
       stream.soundTransform = new SoundTransform(muted ? 0 : 1);
