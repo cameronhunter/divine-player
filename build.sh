@@ -5,4 +5,4 @@
 echo "Compiling swf..."
 
 # Make sure mxmlc is on your path
-mxmlc ./src/Player.as -o ./release/devine-player.swf -use-network=false -static-link-runtime-shared-libraries=true
+mxmlc ./src/Player.as -o ./release/divine-player.swf -use-network=false -static-link-runtime-shared-libraries=true
