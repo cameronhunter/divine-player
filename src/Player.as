@@ -52,6 +52,10 @@ package {
       }
 
       loadVideo();
+
+      if (loaderInfo.parameters.onReady) {
+        ExternalInterface.call(loaderInfo.parameters.onReady);
+      }
     }
 
     private function play(): void {
@@ -127,7 +131,12 @@ package {
       video.attachNetStream(stream);
 
       stream.play(videoUrl);
-      if (!autoplay) pause();
+      if (autoplay) {
+        videoPlaying = true;
+      } else {
+        videoPlaying = false;
+        pause();
+      }
     }
 
   }
