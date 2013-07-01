@@ -81,12 +81,12 @@ package {
     }
 
     private function registerExternalMethods(): void {
-      ExternalInterface.addCallback("play", play);
-      ExternalInterface.addCallback("pause", pause);
-      ExternalInterface.addCallback("paused", isPaused);
-      ExternalInterface.addCallback("mute", mute);
-      ExternalInterface.addCallback("unmute", unmute);
-      ExternalInterface.addCallback("muted", isMuted);
+      ExternalInterface.addCallback("divinePlay", play);
+      ExternalInterface.addCallback("divinePause", pause);
+      ExternalInterface.addCallback("divinePaused", isPaused);
+      ExternalInterface.addCallback("divineMute", mute);
+      ExternalInterface.addCallback("divineUnmute", unmute);
+      ExternalInterface.addCallback("divineMuted", isMuted);
     }
 
     private function loadPoster(): void {
