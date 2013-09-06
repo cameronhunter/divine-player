@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     source: 'src',
-    target: 'build',
+    target: 'release',
     temp: '.tmp',
 
     clean: {
