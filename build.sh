@@ -1,8 +1,0 @@
-#!/bin/bash
-# Compiles the plugin using the free Flex SDK on Linux/Mac:
-# http://sourceforge.net/adobe/flexsdk/wiki/Flex%20SDK/
-
-echo "Compiling swf..."
-
-# Make sure mxmlc is on your path
-mxmlc ./src/Player.as -o ./release/divine-player.swf -use-network=false -static-link-runtime-shared-libraries=true
