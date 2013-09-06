@@ -17,11 +17,22 @@ module.exports = function(grunt) {
         files: {
           '<%= temp %>/js/divine-player.min.js': [
             '<%= source %>/javascript/html5-player.js',
-            '<%= source %>/javascript/flash-player.js'
+            '<%= source %>/javascript/flash-player.js',
+            '<%= source %>/javascript/divine-player.js'
           ],
           '<%= temp %>/js/html5-video-shim.min.js': [
             '<%= source %>/javascript/html5-video-shim.js'
           ]
+        }
+      }
+    },
+
+    wrap: {
+      build: {
+        src: '<%= temp %>/js/divine-player.min.js',
+        dest: '<%= temp %>/js/divine-player.min.js',
+        options: {
+          wrapper: ['(function() {', 'return DivinePlayer;}());']
         }
       }
     },
@@ -55,6 +66,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
       'clean:build',
       'uglify:build',
+      'wrap:build',
       'exec:check_for_mxmlc',
       'exec:build_swf',
       'copy:build',
