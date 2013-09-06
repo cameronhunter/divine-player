@@ -1,6 +1,6 @@
 #!/bin/bash
 # Compiles the plugin using the free Flex SDK on Linux/Mac:
-# http://opensource.adobe.com/wiki/display/flexsdk/Flex+SDK
+# http://sourceforge.net/adobe/flexsdk/wiki/Flex%20SDK/
 
 echo "Compiling swf..."
 
