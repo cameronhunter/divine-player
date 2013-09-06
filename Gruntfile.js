@@ -32,7 +32,7 @@ module.exports = function(grunt) {
         src: '<%= temp %>/js/divine-player.min.js',
         dest: '<%= temp %>/js/divine-player.min.js',
         options: {
-          wrapper: ['(function() {', 'return DivinePlayer;}());']
+          wrapper: ['var DivinePlayer = (function() {', 'return DivinePlayer;}());']
         }
       }
     },
