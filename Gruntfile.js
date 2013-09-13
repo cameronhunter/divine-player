@@ -116,7 +116,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('test', [
-    'test-js'
+    'test:js:headless'
   ]);
 
   grunt.registerTask('test:js:headless', [
