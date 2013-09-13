@@ -6,6 +6,10 @@ module.exports = function(grunt) {
     source: 'src',
     target: 'release',
     temp: '.tmp',
+    bower: 'bower_components',
+
+    javascript: '<%= source %>/javascript',
+    actionscript: '<%= source %>/actionscript',
 
     clean: {
       build: ['<%= temp %>', '<%= target %>'],
@@ -16,20 +20,30 @@ module.exports = function(grunt) {
       build: {
         files: {
           '<%= temp %>/js/divine-player.min.js': [
-            '<%= source %>/javascript/players/html5-player.js',
-            '<%= source %>/javascript/players/flash-player.js',
-            '<%= source %>/javascript/divine-player.js'
+            '<%= javascript %>/players/html5-player.js',
+            '<%= javascript %>/players/flash-player.js',
+            '<%= javascript %>/divine-player.js'
           ],
           '<%= temp %>/js/html5-video-shim.min.js': [
-            '<%= source %>/javascript/html5-video-shim.js'
+            '<%= javascript %>/html5-video-shim.js'
           ]
         }
       }
     },
 
     karma: {
-      continuous: {
-        configFile: 'karma.conf.js',
+      options: {
+        frameworks: ['jasmine'],
+        files: [
+          '<%= bower %>/jquery/jquery.js',
+          '<%= bower %>/jasmine-jquery/lib/jasmine-jquery.js',
+          '<%= javascript %>/html5-video-shim.js',
+          '<%= javascript %>/players/*.js',
+          '<%= javascript %>/divine-player.js',
+          'test/javascript/**/*.spec.js'
+        ]
+      },
+      phantomjs: {
         singleRun: true,
         browsers: ['PhantomJS']
       }
@@ -56,7 +70,7 @@ module.exports = function(grunt) {
         }
       },
       build_swf: {
-        cmd: 'mxmlc <%= source %>/actionscript/Player.as -o <%= temp %>/swf/divine-player.swf -use-network=false -static-link-runtime-shared-libraries=true'
+        cmd: 'mxmlc <%= actionscript %>/Player.as -o <%= temp %>/swf/divine-player.swf -use-network=false -static-link-runtime-shared-libraries=true'
       }
     },
 
@@ -72,12 +86,17 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('build', [
-      'clean:build',
-      'uglify:build',
-      'wrap:build',
-      'exec:check_for_mxmlc',
-      'exec:build_swf',
-      'copy:build',
-      'clean:temp'
+    'clean:build',
+    'test',
+    'uglify:build',
+    'wrap:build',
+    'exec:check_for_mxmlc',
+    'exec:build_swf',
+    'copy:build',
+    'clean:temp'
+  ]);
+
+  grunt.registerTask('test', [
+    'karma:phantomjs'
   ]);
 };
