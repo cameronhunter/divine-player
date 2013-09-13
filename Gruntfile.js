@@ -27,6 +27,14 @@ module.exports = function(grunt) {
       }
     },
 
+    karma: {
+      continuous: {
+        configFile: 'karma.conf.js',
+        singleRun: true,
+        browsers: ['PhantomJS']
+      }
+    },
+
     wrap: {
       build: {
         src: '<%= temp %>/js/divine-player.min.js',
