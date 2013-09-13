@@ -12,8 +12,8 @@ module.exports = function(grunt) {
     actionscript: '<%= source %>/actionscript',
 
     clean: {
-      build: ['<%= temp %>', '<%= target %>'],
-      temp: ['<%= temp %>']
+      build: '<%= target %>',
+      temp: '<%= temp %>'
     },
 
     uglify: {
@@ -75,25 +75,34 @@ module.exports = function(grunt) {
     },
 
     copy: {
-      build: {
-        files: [
-          {expand: true, cwd: '<%= temp %>', src: 'js/*', dest: '<%= target %>', filter: 'isFile'},
-          {expand: true, cwd: '<%= temp %>', src: 'swf/*', dest: '<%= target %>', filter: 'isFile'}
-        ]
+      js: {
+        files: [{expand: true, cwd: '<%= temp %>', src: 'js/*', dest: '<%= target %>', filter: 'isFile'}]
+      },
+      swf: {
+        files: [{expand: true, cwd: '<%= temp %>', src: 'swf/*', dest: '<%= target %>', filter: 'isFile'}]
       }
     }
 
   });
 
   grunt.registerTask('build', [
-    'clean:build',
+    'clean',
     'test',
+    'build-js',
+    'build-swf',
+    'clean:temp'
+  ]);
+
+  grunt.registerTask('build-js', [
     'uglify:build',
     'wrap:build',
+    'copy:js'
+  ]);
+
+  grunt.registerTask('build-swf', [
     'exec:check_for_mxmlc',
     'exec:build_swf',
-    'copy:build',
-    'clean:temp'
+    'copy:swf'
   ]);
 
   grunt.registerTask('test', [
