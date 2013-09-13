@@ -34,6 +34,7 @@ module.exports = function(grunt) {
     karma: {
       options: {
         frameworks: ['jasmine'],
+        singleRun: true,
         files: [
           '<%= bower %>/jquery/jquery.js',
           '<%= bower %>/jasmine-jquery/lib/jasmine-jquery.js',
@@ -44,8 +45,10 @@ module.exports = function(grunt) {
         ]
       },
       phantomjs: {
-        singleRun: true,
         browsers: ['PhantomJS']
+      },
+      chrome: {
+        browsers: ['Chrome']
       }
     },
 
@@ -100,7 +103,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build:js', [
-    'test:js',
+    'test:js:headless',
     'uglify:build',
     'wrap:build',
     'copy:js'
@@ -116,7 +119,11 @@ module.exports = function(grunt) {
     'test-js'
   ]);
 
-  grunt.registerTask('test:js', [
+  grunt.registerTask('test:js:headless', [
     'karma:phantomjs'
+  ]);
+
+  grunt.registerTask('test:js:chrome', [
+    'karma:chrome'
   ]);
 };
