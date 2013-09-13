@@ -81,19 +81,26 @@ module.exports = function(grunt) {
       swf: {
         files: [{expand: true, cwd: '<%= temp %>', src: 'swf/*', dest: '<%= target %>', filter: 'isFile'}]
       }
+    },
+
+    concurrent: {
+      build: {
+        tasks: ['build-js', 'build-swf']
+      }
     }
 
   });
 
+  grunt.registerTask('default', ['build']);
+
   grunt.registerTask('build', [
-    'clean',
-    'test',
-    'build-js',
-    'build-swf',
+    'clean:build',
+    'concurrent:build',
     'clean:temp'
   ]);
 
   grunt.registerTask('build-js', [
+    'test-js',
     'uglify:build',
     'wrap:build',
     'copy:js'
@@ -106,6 +113,10 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('test', [
+    'test-js'
+  ]);
+
+  grunt.registerTask('test-js', [
     'karma:phantomjs'
   ]);
 };
