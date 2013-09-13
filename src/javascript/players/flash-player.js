@@ -1,7 +1,7 @@
 var FlashPlayer = (function(global) {
 
   // TODO: Select the mp4 instead of just the first source
-  function player(el, options, onReady) {
+  function FlashPlayer(el, options, onReady) {
 
     var self = this;
     if (onReady) {
@@ -14,12 +14,12 @@ var FlashPlayer = (function(global) {
       muted: override(hasAttribute(el, 'muted'), options.muted),
       loop: override(hasAttribute(el, 'loop'), options.loop),
       poster: hasAttribute(el, 'poster') ? absolute(el.getAttribute('poster')) : undefined,
-      video: absolute(el.getElementsByTagName('source')[0].src),
+      video: getVideoUrl(el),
       onReady: 'onReady'
     });
   }
 
-  player.canPlay = function() {
+  FlashPlayer.canPlay = function() {
     try {
       var flash = window.ActiveXObject ?
                     new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version') :
@@ -31,36 +31,41 @@ var FlashPlayer = (function(global) {
     return false;
   };
 
-  player.fn = player.prototype;
+  FlashPlayer.fn = FlashPlayer.prototype;
 
-  player.fn.play = function() {
+  FlashPlayer.fn.play = function() {
     this.swf.divinePlay();
   };
 
-  player.fn.pause = function() {
+  FlashPlayer.fn.pause = function() {
     this.swf.divinePause();
   };
 
-  player.fn.paused = function() {
+  FlashPlayer.fn.paused = function() {
     return this.swf.divinePaused();
   };
 
-  player.fn.mute = function() {
+  FlashPlayer.fn.mute = function() {
     this.swf.divineMute();
   };
 
-  player.fn.unmute = function() {
+  FlashPlayer.fn.unmute = function() {
     this.swf.divineUnmute();
   };
 
-  player.fn.muted = function() {
+  FlashPlayer.fn.muted = function() {
     return this.swf.divineMuted();
   };
 
-  return player;
+  return FlashPlayer;
 
   function absolute(url) {
     return (url || '').indexOf('//') === 0 ? document.location.protocol + url : url;
+  }
+
+  function getVideoUrl(el) {
+    var sources = el.getElementsByTagName('source');
+    return sources.length ? absolute(sources[0].src) : undefined;
   }
 
   function attrs(options) {

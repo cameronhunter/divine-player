@@ -1,5 +1,6 @@
 var HTML5Player = (function() {
-  function player(el, options, onReady) {
+
+  function HTML5Player(el, options, onReady) {
     this.el = el;
 
     if (options.autoplay != null) this.el.autoplay = options.autoplay;
@@ -12,7 +13,7 @@ var HTML5Player = (function() {
     if (onReady) onReady(this);
   }
 
-  player.canPlay = function(el) {
+  HTML5Player.canPlay = function(el) {
     try {
       var sources = el.getElementsByTagName('source');
       for (var i=0, l = sources.length; i<l; i++) {
@@ -24,33 +25,33 @@ var HTML5Player = (function() {
     return false;
   };
 
-  player.fn = player.prototype;
+  HTML5Player.fn = HTML5Player.prototype;
 
-  player.fn.play = function() {
+  HTML5Player.fn.play = function() {
     this.el.play();
   };
 
-  player.fn.pause = function() {
+  HTML5Player.fn.pause = function() {
     this.el.pause();
   };
 
-  player.fn.paused = function() {
+  HTML5Player.fn.paused = function() {
     return this.el.paused;
   };
 
-  player.fn.mute = function() {
+  HTML5Player.fn.mute = function() {
     this.el.muted = true;
   };
 
-  player.fn.unmute = function() {
+  HTML5Player.fn.unmute = function() {
     this.el.muted = false;
   };
 
-  player.fn.muted = function() {
+  HTML5Player.fn.muted = function() {
     return this.el.muted;
   };
 
-  return player;
+  return HTML5Player;
 
   function workarounds(el) {
     /**
