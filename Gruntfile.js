@@ -85,7 +85,7 @@ module.exports = function(grunt) {
 
     concurrent: {
       build: {
-        tasks: ['build-js', 'build-swf']
+        tasks: ['build:js', 'build:swf']
       }
     }
 
@@ -99,14 +99,14 @@ module.exports = function(grunt) {
     'clean:temp'
   ]);
 
-  grunt.registerTask('build-js', [
-    'test-js',
+  grunt.registerTask('build:js', [
+    'test:js',
     'uglify:build',
     'wrap:build',
     'copy:js'
   ]);
 
-  grunt.registerTask('build-swf', [
+  grunt.registerTask('build:swf', [
     'exec:check_for_mxmlc',
     'exec:build_swf',
     'copy:swf'
@@ -116,7 +116,7 @@ module.exports = function(grunt) {
     'test-js'
   ]);
 
-  grunt.registerTask('test-js', [
+  grunt.registerTask('test:js', [
     'karma:phantomjs'
   ]);
 };
