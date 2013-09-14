@@ -4,15 +4,16 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     source: 'src',
-    target: 'release',
-    temp: '.tmp',
+    release: 'release',
+    fixtures: 'test/fixtures',
     bower: 'bower_components',
+    temp: '.tmp',
 
     javascript: '<%= source %>/javascript',
     actionscript: '<%= source %>/actionscript',
 
     clean: {
-      build: '<%= target %>',
+      build: '<%= release %>',
       temp: '<%= temp %>'
     },
 
@@ -36,19 +37,30 @@ module.exports = function(grunt) {
         frameworks: ['jasmine'],
         singleRun: true,
         files: [
-          '<%= bower %>/jquery/jquery.js',
-          '<%= bower %>/jasmine-jquery/lib/jasmine-jquery.js',
+          // Code under test
           '<%= javascript %>/html5-video-shim.js',
           '<%= javascript %>/players/*.js',
           '<%= javascript %>/divine-player.js',
-          'test/javascript/**/*.spec.js'
+
+          // Test libraries
+          '<%= bower %>/jquery/jquery.js',
+          '<%= bower %>/jasmine-jquery/lib/jasmine-jquery.js',
+
+          // Behaviour specifications
+          'test/javascript/**/*.spec.js',
+
+          // Fixtures for use in tests cases
+          {pattern: '<%= fixtures %>/*', included: false, served: true},
+
+          // Needed for testing Flash player
+          {pattern: '<%= release %>/swf/divine-player.swf', included: false, served: true}
         ]
       },
       phantomjs: {
         browsers: ['PhantomJS']
       },
-      chrome: {
-        browsers: ['Chrome']
+      browser: {
+        browsers: ['Chrome', 'Firefox']
       }
     },
 
@@ -79,10 +91,10 @@ module.exports = function(grunt) {
 
     copy: {
       js: {
-        files: [{expand: true, cwd: '<%= temp %>', src: 'js/*', dest: '<%= target %>', filter: 'isFile'}]
+        files: [{expand: true, cwd: '<%= temp %>', src: 'js/*', dest: '<%= release %>', filter: 'isFile'}]
       },
       swf: {
-        files: [{expand: true, cwd: '<%= temp %>', src: 'swf/*', dest: '<%= target %>', filter: 'isFile'}]
+        files: [{expand: true, cwd: '<%= temp %>', src: 'swf/*', dest: '<%= release %>', filter: 'isFile'}]
       }
     },
 
@@ -103,7 +115,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build:js', [
-    'test:js:headless',
+    'test:headless',
     'uglify:build',
     'wrap:build',
     'copy:js'
@@ -116,14 +128,14 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('test', [
-    'test:js:headless'
+    'test:headless'
   ]);
 
-  grunt.registerTask('test:js:headless', [
+  grunt.registerTask('test:headless', [
     'karma:phantomjs'
   ]);
 
-  grunt.registerTask('test:js:chrome', [
-    'karma:chrome'
+  grunt.registerTask('test:browser', [
+    'karma:browser'
   ]);
 };

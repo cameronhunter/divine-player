@@ -4,18 +4,25 @@ var FlashPlayer = (function(global) {
   function FlashPlayer(el, options, onReady) {
 
     var self = this;
+    var callback = 'divinePlayer_onReady_' + (new Date).getTime();
     if (onReady) {
-      global['onReady'] = function() { onReady(self); };
+      global[callback] = function() { onReady(self); };
     }
 
-    this.swf = embed(options.swf, el, {
-      size: options.size,
+    var swf = override(el.getAttribute('data-fallback-player'), options.swf);
+    var size = options.size;
+
+    require(swf, 'SWF url must be specified in options.');
+    require(size, 'Size must be specified in options.');
+
+    this.swf = embed(swf, el, {
+      size: size,
       autoplay: override(hasAttribute(el, 'autoplay'), options.autoplay),
       muted: override(hasAttribute(el, 'muted'), options.muted),
       loop: override(hasAttribute(el, 'loop'), options.loop),
       poster: hasAttribute(el, 'poster') ? absolute(el.getAttribute('poster')) : undefined,
       video: getVideoUrl(el),
-      onReady: 'onReady'
+      onReady: callback
     });
   }
 
@@ -125,5 +132,10 @@ var FlashPlayer = (function(global) {
 
   function override(original, custom) {
     return custom == null ? original : custom;
+  }
+
+  function require(condition, message) {
+    if (!condition) throw (message || "Requirement isn't fullfilled");
+    return condition;
   }
 }(this));
