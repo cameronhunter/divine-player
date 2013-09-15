@@ -3,18 +3,27 @@ var DivinePlayer = (function() {
   var PLAYERS = [HTML5Player, FlashPlayer];
 
   function DivinePlayer(el, options, onReady) {
-    var Player = getSupportedPlayer(el);
-    if (!Player) throw "No supported player found.";
+    require(el, 'Element must be defined.');
+    require(options, 'Options must be defined.');
+    require(options.size, 'Size must be defined.');
+
+    var Player = require(DivinePlayer.getSupportedPlayer(el), 'No supported player found.');
+
     return new Player(el, options, onReady);
   }
 
   DivinePlayer.players = PLAYERS;
 
-  function getSupportedPlayer(video) {
+  DivinePlayer.getSupportedPlayer = function(video) {
     for (var i=0, l=PLAYERS.length; i<l; i++) if (PLAYERS[i].canPlay(video)) {
       return PLAYERS[i];
     }
-  }
+  };
 
   return DivinePlayer;
+
+  function require(condition, message) {
+    if (!condition) throw (message || "Requirement isn't fullfilled");
+    return condition;
+  }
 }());

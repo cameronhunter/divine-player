@@ -10,13 +10,11 @@ var FlashPlayer = (function(global) {
     }
 
     var swf = override(el.getAttribute('data-fallback-player'), options.swf);
-    var size = options.size;
 
-    require(swf, 'SWF url must be specified in options.');
-    require(size, 'Size must be specified in options.');
+    if (!swf) throw 'SWF url must be specified.';
 
     this.swf = embed(swf, el, {
-      size: size,
+      size: options.size,
       autoplay: override(hasAttribute(el, 'autoplay'), options.autoplay),
       muted: override(hasAttribute(el, 'muted'), options.muted),
       loop: override(hasAttribute(el, 'loop'), options.loop),
@@ -132,10 +130,5 @@ var FlashPlayer = (function(global) {
 
   function override(original, custom) {
     return custom == null ? original : custom;
-  }
-
-  function require(condition, message) {
-    if (!condition) throw (message || "Requirement isn't fullfilled");
-    return condition;
   }
 }(this));
