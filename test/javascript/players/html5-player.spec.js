@@ -1,11 +1,14 @@
 /**
- * Difficulties
+ * Issues
  *
- * The HTML5 video element is unsupported in PhantomJS which
- * makes things tricky to test in a headless environment.
+ * 1. The HTML5 video element is unsupported in PhantomJS which
+ *    makes things tricky to test in a headless environment.
+ *    Link: https://github.com/ariya/phantomjs/wiki/Supported-Web-Standards#unsupported-features
  *
- * Link: https://github.com/ariya/phantomjs/wiki/Supported-Web-Standards#unsupported-features
+ * 2. Chrome isn't correctly triggering the 'ended' event on the video element.
+ *    Link: https://code.google.com/p/chromium/issues/detail?id=157543
  */
+
 describe('HTML5Player', function() {
 
   var isPhantomJS = /PhantomJS/.test(navigator.userAgent);
@@ -25,7 +28,8 @@ describe('HTML5Player', function() {
   describe('workarounds', function() {
 
     describe("Android doesn't loop correctly", function() {
-      // Ignoring test until Chrome issue is resolved: https://code.google.com/p/chromium/issues/detail?id=157543
+
+      // Issue #2
       xcit('should loop manually', !isPhantomJS, function() {
         var onReady = jasmine.createSpy('onReady');
         spyOn(this.video, 'play').andCallThrough();
