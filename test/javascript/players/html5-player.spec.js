@@ -40,7 +40,7 @@ describe('HTML5Player', function() {
 
         waitsFor(function() {
           return this.video.play.callCount;
-        }, 10000);
+        }, this.video.duration * 1500);
 
         runs(function() {
           expect(this.video.play).toHaveBeenCalled();
