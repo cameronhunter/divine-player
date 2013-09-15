@@ -25,7 +25,7 @@ describe('HTML5Player', function() {
   describe('workarounds', function() {
 
     describe("Android doesn't loop correctly", function() {
-      cit(!isPhantomJS, 'should loop manually', function() {
+      cit('should loop manually', !isPhantomJS, function() {
         spyOn(this.video, 'play');
 
         expect(this.video.hasAttribute('loop')).toBe(true);
@@ -49,7 +49,7 @@ describe('HTML5Player', function() {
     });
 
     describe("iPad won't show the play button if the controls are off", function() {
-      cit(!isPhantomJS, 'should add and remove the controls manually', function() {
+      cit('should add and remove the controls manually', !isPhantomJS, function() {
         expect(this.video.hasAttribute('controls')).toBe(false);
 
         var player = new HTML5Player(this.video, this.iPad);

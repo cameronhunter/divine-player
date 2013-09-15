@@ -21,7 +21,7 @@ DivinePlayer.players.forEach(function(Player) {
       // We can't test Flash external interface in Phantom JS.
       var isPhantomJSAndFlashPlayer = /PhantomJS/.test(navigator.userAgent) && Player.name === 'FlashPlayer';
 
-      cit(!isPhantomJSAndFlashPlayer, 'should call the onReady callback', function() {
+      cit('should call the onReady callback', !isPhantomJSAndFlashPlayer, function() {
         var player, onReady = jasmine.createSpy('onReady');
 
         runs(function() {

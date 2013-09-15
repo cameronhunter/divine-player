@@ -5,7 +5,7 @@
  * It will only run the test if the condition is true, otherwise
  * the test is ignored using `xit`.
  */
-function cit(condition, description, test) {
+function cit(description, condition, test) {
   if (condition) {
     it.call(this, description, test);
   } else {
