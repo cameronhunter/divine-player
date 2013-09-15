@@ -12,8 +12,13 @@
     "grunt-karma": "~0.6.2",
     "grunt-wrap": "latest",
     "karma": "~0.10.2",
+    "karma-chrome-launcher": "~0.1.0",
+    "karma-firefox-launcher": "~0.1.0",
+    "karma-ie-launcher": "~0.1.1",
     "karma-jasmine": "~0.1.3",
+    "karma-opera-launcher": "~0.1.0",
     "karma-phantomjs-launcher": "~0.1.0",
+    "karma-safari-launcher": "~0.1.1",
     "matchdep": "~0.1.1"
   },
   "engines": {

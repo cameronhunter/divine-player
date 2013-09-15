@@ -56,12 +56,19 @@ module.exports = function(grunt) {
           {pattern: '<%= release %>/swf/divine-player.swf', included: false, served: true}
         ]
       },
-      phantomjs: {
-        browsers: ['PhantomJS']
-      },
-      browser: {
-        browsers: ['Chrome', 'Firefox']
-      }
+
+      // Individual browsers
+      headless: { browsers: ['PhantomJS'] },
+      chrome: { browsers: ['Chrome'] },
+      firefox: { browsers: ['Firefox'] },
+      ie: { browsers: ['IE'] },
+      opera: { browsers: ['Opera'] },
+      safari: { browsers: ['Safari'] },
+
+      // Browsers grouped by OS
+      linux: { browsers: ['Chrome', 'Firefox', 'Opera'] },
+      osx: { browsers: ['Chrome', 'Firefox', 'Opera', 'Safari'] },
+      windows: { browsers: ['Chrome', 'Firefox', 'IE', 'Opera', 'Safari'] }
     },
 
     wrap: {
@@ -128,14 +135,6 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('test', [
-    'test:headless'
-  ]);
-
-  grunt.registerTask('test:headless', [
-    'karma:phantomjs'
-  ]);
-
-  grunt.registerTask('test:browser', [
-    'karma:browser'
+    'karma:headless'
   ]);
 };
