@@ -44,27 +44,27 @@ DivinePlayer.players.forEach(function(Player) {
         this.player = new Player(this.video, {});
       });
 
-      it('should support Player#play', function() {
+      it('should support #play', function() {
         expect(this.player.play).toBeDefined();
       });
 
-      it('should support Player#pause', function() {
+      it('should support #pause', function() {
         expect(this.player.pause).toBeDefined();
       });
 
-      it('should support Player#paused', function() {
+      it('should support #paused', function() {
         expect(this.player.paused).toBeDefined();
       });
 
-      it('should support Player#mute', function() {
+      it('should support #mute', function() {
         expect(this.player.mute).toBeDefined();
       });
 
-      it('should support Player#unmute', function() {
+      it('should support #unmute', function() {
         expect(this.player.unmute).toBeDefined();
       });
 
-      it('should support Player#muted', function() {
+      it('should support #muted', function() {
         expect(this.player.muted).toBeDefined();
       });
     });
