@@ -50,5 +50,4 @@ describe('DivinePlayer', function() {
     });
   });
 
-
 });
