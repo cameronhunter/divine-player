@@ -1,16 +1,16 @@
 var DivinePlayer = (function() {
 
   var PLAYERS = [HTML5Player, FlashPlayer];
+  var OPTIONS = ['autoplay', 'controls', 'loop', 'muted'];
 
   function DivinePlayer(el, options, onReady) {
     require(el, 'Element must be defined.');
 
     var options = options || {};
 
-    attr(el, 'autoplay', options.autoplay);
-    attr(el, 'controls', options.controls);
-    attr(el, 'loop', options.loop);
-    attr(el, 'muted', options.muted);
+    for (var i=0, l=OPTIONS.length; i<l; i++) {
+      attr(el, OPTIONS[i], options[OPTIONS[i]]);
+    }
 
     var Player = require(DivinePlayer.getSupportedPlayer(el), 'No supported player found.');
 
@@ -19,6 +19,7 @@ var DivinePlayer = (function() {
 
   // Exposed for testing purposes.
   DivinePlayer.players = PLAYERS;
+  DivinePlayer.options = OPTIONS;
   DivinePlayer.getSupportedPlayer = function(video) {
     for (var i=0, l=PLAYERS.length; i<l; i++) if (PLAYERS[i].canPlay(video)) {
       return PLAYERS[i];

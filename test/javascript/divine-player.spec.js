@@ -40,7 +40,7 @@ describe('DivinePlayer', function() {
       spyOn(DivinePlayer, 'getSupportedPlayer').andReturn(this.mockPlayer);
     });
 
-    ['autoplay', 'controls', 'loop', 'muted'].forEach(function(option) {
+    DivinePlayer.options.forEach(function(option) {
       it('should set ' + option + ' property on video element', function() {
         var options = {};
 
