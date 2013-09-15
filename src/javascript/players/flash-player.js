@@ -1,7 +1,11 @@
 var FlashPlayer = (function(global) {
 
+  var DEFAULT_SIZE = 150;
+
   // TODO: Select the mp4 instead of just the first source
   function FlashPlayer(el, options, onReady) {
+
+    if (!options.size) options.size = DEFAULT_SIZE;
 
     var self = this;
     var callback = 'divinePlayer_onReady_' + (new Date).getTime();

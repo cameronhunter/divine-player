@@ -19,13 +19,13 @@ DivinePlayer.players.forEach(function(Player) {
 
     describe('player instantiation', function() {
       // We can't test Flash external interface in Phantom JS.
-      var conditionalIt = /PhantomJS/.test(navigator.userAgent) && Player.name === 'FlashPlayer' ? xit : it;
+      var isPhantomJSAndFlashPlayer = /PhantomJS/.test(navigator.userAgent) && Player.name === 'FlashPlayer';
 
-      conditionalIt('should call the onReady callback', function() {
+      cit(!isPhantomJSAndFlashPlayer, 'should call the onReady callback', function() {
         var player, onReady = jasmine.createSpy('onReady');
 
         runs(function() {
-          player = new Player(this.video, {size: 150}, onReady);
+          player = new Player(this.video, {}, onReady);
         });
 
         waitsFor(function() {
@@ -41,7 +41,7 @@ DivinePlayer.players.forEach(function(Player) {
 
     describe('instance functionality', function() {
       beforeEach(function() {
-        this.player = new Player(this.video, {size: 150});
+        this.player = new Player(this.video, {});
       });
 
       it('should support Player#play', function() {

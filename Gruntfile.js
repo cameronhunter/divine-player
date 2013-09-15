@@ -5,7 +5,8 @@ module.exports = function(grunt) {
   grunt.initConfig({
     source: 'src',
     release: 'release',
-    fixtures: 'test/fixtures',
+    test: 'test',
+    fixtures: '<%= test %>/fixtures',
     bower: 'bower_components',
     temp: '.tmp',
 
@@ -45,6 +46,7 @@ module.exports = function(grunt) {
           // Test libraries
           '<%= bower %>/jquery/jquery.js',
           '<%= bower %>/jasmine-jquery/lib/jasmine-jquery.js',
+          '<%= test %>/jasmine-cit.js',
 
           // Behaviour specifications
           'test/javascript/**/*.spec.js',

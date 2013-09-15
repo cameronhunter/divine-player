@@ -8,7 +8,7 @@ describe('DivinePlayer', function() {
   it('should delegate to underlying video players', function() {
     spyOn(DivinePlayer, 'getSupportedPlayer').andReturn(this.mockPlayer);
 
-    var options = {size: 150};
+    var options = {};
     var onReady = function() {};
 
     DivinePlayer(this.video, options, onReady);
@@ -21,23 +21,7 @@ describe('DivinePlayer', function() {
       spyOn(DivinePlayer, 'getSupportedPlayer').andReturn(this.mockPlayer);
 
       expect(function() {
-        DivinePlayer(undefined, {});
-      }).toThrow();
-    });
-
-    it("options isn't defined", function() {
-      spyOn(DivinePlayer, 'getSupportedPlayer').andReturn(this.mockPlayer);
-
-      expect(function() {
-        DivinePlayer(this.video);
-      }).toThrow();
-    });
-
-    it("options.size isn't defined", function() {
-      spyOn(DivinePlayer, 'getSupportedPlayer').andReturn(this.mockPlayer);
-
-      expect(function() {
-        DivinePlayer(this.video, {});
+        DivinePlayer(undefined);
       }).toThrow();
     });
 
@@ -45,7 +29,7 @@ describe('DivinePlayer', function() {
       spyOn(DivinePlayer, 'getSupportedPlayer').andReturn(undefined);
 
       expect(function() {
-        DivinePlayer(this.video, {size: 150});
+        DivinePlayer(this.video);
       }).toThrow();
     });
   });
@@ -58,7 +42,7 @@ describe('DivinePlayer', function() {
 
     ['autoplay', 'controls', 'loop', 'muted'].forEach(function(option) {
       it('should set ' + option + ' property on video element', function() {
-        var options = {size: 150};
+        var options = {};
 
         this.video.removeAttribute(option);
         expect(this.video.getAttribute(option)).toBeFalsy();
@@ -70,7 +54,7 @@ describe('DivinePlayer', function() {
       });
 
       it('should remove the ' + option + ' property if present when value is overridden to false', function() {
-        var options = {size: 150};
+        var options = {};
 
         this.video.setAttribute(option, true);
         expect(this.video.getAttribute(option)).toBeTruthy();

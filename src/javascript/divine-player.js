@@ -4,8 +4,8 @@ var DivinePlayer = (function() {
 
   function DivinePlayer(el, options, onReady) {
     require(el, 'Element must be defined.');
-    require(options, 'Options must be defined.');
-    require(options.size, 'Size must be defined.');
+
+    var options = options || {};
 
     attr(el, 'autoplay', options.autoplay);
     attr(el, 'controls', options.controls);
