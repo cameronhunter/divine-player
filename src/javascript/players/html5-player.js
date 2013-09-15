@@ -3,11 +3,6 @@ var HTML5Player = (function() {
   function HTML5Player(el, options, onReady) {
     this.el = el;
 
-    if (options.autoplay != null) this.el.autoplay = options.autoplay;
-    if (options.controls != null) this.el.controls = options.controls;
-    if (options.loop != null) this.el.loop = options.loop;
-    if (options.muted != null) this.el.muted = options.muted;
-
     workarounds(this.el);
 
     if (onReady) onReady(this);

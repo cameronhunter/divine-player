@@ -7,6 +7,11 @@ var DivinePlayer = (function() {
     require(options, 'Options must be defined.');
     require(options.size, 'Size must be defined.');
 
+    attr(el, 'autoplay', options.autoplay);
+    attr(el, 'controls', options.controls);
+    attr(el, 'loop', options.loop);
+    attr(el, 'muted', options.muted);
+
     var Player = require(DivinePlayer.getSupportedPlayer(el), 'No supported player found.');
 
     return new Player(el, options, onReady);
@@ -25,5 +30,15 @@ var DivinePlayer = (function() {
   function require(condition, message) {
     if (!condition) throw (message || "Requirement isn't fullfilled");
     return condition;
+  }
+
+  function attr(el, name, value) {
+    if (value == null) return;
+
+    if (value) {
+      el.setAttribute(name, value);
+    } else {
+      el.removeAttribute(name);
+    }
   }
 }());

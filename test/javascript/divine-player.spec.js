@@ -50,4 +50,37 @@ describe('DivinePlayer', function() {
     });
   });
 
+  describe('options', function() {
+
+    beforeEach(function() {
+      spyOn(DivinePlayer, 'getSupportedPlayer').andReturn(this.mockPlayer);
+    });
+
+    ['autoplay', 'controls', 'loop', 'muted'].forEach(function(option) {
+      it('should set ' + option + ' property on video element', function() {
+        var options = {size: 150};
+
+        this.video.removeAttribute(option);
+        expect(this.video.getAttribute(option)).toBeFalsy();
+
+        options[option] = true;
+        DivinePlayer(this.video, options);
+
+        expect(this.video.getAttribute(option)).toBeTruthy();
+      });
+
+      it('should remove the ' + option + ' property if present when value is overridden to false', function() {
+        var options = {size: 150};
+
+        this.video.setAttribute(option, true);
+        expect(this.video.getAttribute(option)).toBeTruthy();
+
+        options[option] = false;
+        DivinePlayer(this.video, options);
+
+        expect(this.video.getAttribute(option)).toBeFalsy();
+      });
+    });
+  });
+
 });
