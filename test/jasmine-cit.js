@@ -5,6 +5,7 @@
  * It will only run the test if the condition is true, otherwise
  * the test is ignored using `xit`.
  */
+
 function cit(description, condition, test) {
   if (condition) {
     it.call(this, description, test);
@@ -12,4 +13,8 @@ function cit(description, condition, test) {
     console.warn('A test was ignored');
     xit.call(this, description, test);
   }
+}
+
+function xcit(description, condition, test) {
+  xit.call(this, description, test);
 }

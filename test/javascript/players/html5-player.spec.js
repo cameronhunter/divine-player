@@ -12,7 +12,7 @@ describe('HTML5Player', function() {
 
   beforeEach(function() {
     jasmine.getFixtures().set(
-      '<video id="video" loop>' +
+      '<video id="video" loop muted>' +
         '<source src="/base/test/fixtures/video.mp4" type="video/mp4">' +
       '</video>'
     );
@@ -25,24 +25,31 @@ describe('HTML5Player', function() {
   describe('workarounds', function() {
 
     describe("Android doesn't loop correctly", function() {
-      cit('should loop manually', !isPhantomJS, function() {
-        spyOn(this.video, 'play');
+      // Ignoring test until Chrome issue is resolved: https://code.google.com/p/chromium/issues/detail?id=157543
+      xcit('should loop manually', !isPhantomJS, function() {
+        var onReady = jasmine.createSpy('onReady');
+        spyOn(this.video, 'play').andCallThrough();
 
-        expect(this.video.hasAttribute('loop')).toBe(true);
+        runs(function() {
+          expect(this.video.hasAttribute('loop')).toBe(true);
+          player = new HTML5Player(this.video, this.android, onReady);
+          expect(this.video.loop).toBe(false);
+        });
 
-        var player = new HTML5Player(this.video, this.android);
-
-        expect(this.video.loop).toBe(false);
+        waitsFor(function() {
+          return onReady.callCount;
+        }, 'onReady to be called');
 
         runs(function() {
           player.play();
         });
 
         waitsFor(function() {
-          return this.video.play.callCount;
-        }, this.video.duration * 1500);
+          return this.video.ended;
+        }, 10000, 'video to finish');
 
         runs(function() {
+          expect(this.video.play.callCount).toBe(2);
           expect(this.video.play).toHaveBeenCalled();
         });
       });
