@@ -1,3 +1,10 @@
+/**
+ * Issues
+ *
+ * 1. PhantomJS doesn't support Flash plugin, so we can't test the
+ *    SWF external interface from JS.
+ *    Link: https://github.com/ariya/phantomjs/wiki/Supported-Web-Standards#unsupported-features
+ */
 DivinePlayer.players.forEach(function(Player) {
 
   describe(Player.name, function() {
@@ -18,9 +25,9 @@ DivinePlayer.players.forEach(function(Player) {
     });
 
     describe('player instantiation', function() {
-      // We can't test Flash external interface in Phantom JS.
-      var isPhantomJSAndFlashPlayer = /PhantomJS/.test(navigator.userAgent) && Player.name === 'FlashPlayer';
 
+      // Issue #1
+      var isPhantomJSAndFlashPlayer = /PhantomJS/.test(navigator.userAgent) && Player.name === 'FlashPlayer';
       cit('should call the onReady callback', !isPhantomJSAndFlashPlayer, function() {
         var player, onReady = jasmine.createSpy('onReady');
 
