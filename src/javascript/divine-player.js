@@ -17,8 +17,8 @@ var DivinePlayer = (function() {
     return new Player(el, options, onReady);
   }
 
+  // Exposed for testing purposes.
   DivinePlayer.players = PLAYERS;
-
   DivinePlayer.getSupportedPlayer = function(video) {
     for (var i=0, l=PLAYERS.length; i<l; i++) if (PLAYERS[i].canPlay(video)) {
       return PLAYERS[i];
