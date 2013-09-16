@@ -38,6 +38,7 @@ module.exports = function(grunt) {
       options: {
         frameworks: ['jasmine'],
         singleRun: true,
+        browserDisconnectTimeout: 5000,
         files: [
           // Code under test
           '<%= javascript %>/html5-video-shim.js',
