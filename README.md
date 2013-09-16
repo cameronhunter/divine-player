@@ -5,8 +5,26 @@ A very simple HTML5 video player that degrades to Flash if necessary.
 ## Building
 You can build the project using `grunt build`. This creates a `release` folder containing the minified javascript and the built SWF player.
 
-## Real Browser Testing
-You can run the full suite of tests in [Sauce Labs](https://saucelabs.com/u/CameronHunter) using the `grunt test:remote` command.
+## Testing
+
+<dl>
+  <dt><code>grunt karma:headless</code></dt>
+  <dd>Runs the tests in phantomjs</dd>
+  
+  <dt><code>grunt karma:[chrome|firefox|ie|opera|safari]</code></dt>
+  <dd>Runs the tests locally in a real browser (which must be installed)</dd>
+  
+  <dt><code>grunt karma:[linux|osx|windows]</code></dt>
+  <dd>Runs the tests locally in multiple browsers (which must be installed) common to an operating system</dd>
+</dl>
+
+
+## Testing using Sauce Labs
+You can also run the tests remotely in real browsers with [Sauce Labs](https://saucelabs.com/u/CameronHunter):
+
+```
+grunt test:remote
+```
 
 Currently divine player is tested against:
 
