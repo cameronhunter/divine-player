@@ -2,14 +2,11 @@ var HTML5Player = (function() {
 
   function HTML5Player(el, options, onReady) {
     this.el = el;
-
-    // Needed for testing
-    var userAgent = options.userAgentOverride || navigator.userAgent;
-
-    workarounds(this.el, userAgent);
-
+    workarounds(this.el, navigator.userAgent);
     if (onReady) onReady(this);
   }
+
+  HTML5Player.name = HTML5Player.name || 'HTML5Player';
 
   HTML5Player.canPlay = function(el) {
     try {

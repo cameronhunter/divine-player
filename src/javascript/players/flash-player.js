@@ -1,3 +1,15 @@
+/**
+ * Flash Player
+ *
+ * This player reads the properties from the video element, and replaces it with
+ * an embedded SWF which handles the video playback.
+ *
+ * 1. FIXME: IE10 doesn't support dynamic object embeds. Not much of a big deal
+ *           since it supports HTML5 video, but would be good to remove the
+ *           workaround.
+ *           Link: https://code.google.com/p/swfobject/issues/detail?id=667
+ */
+
 var FlashPlayer = (function(global) {
 
   var DEFAULT_SIZE = 150;
@@ -28,8 +40,13 @@ var FlashPlayer = (function(global) {
     });
   }
 
+  FlashPlayer.name = FlashPlayer.name || 'FlashPlayer';
+
   FlashPlayer.canPlay = function() {
     try {
+      // Issue #1
+      if (/MSIE 10/i.test(navigator.userAgent)) return false;
+
       var flash = window.ActiveXObject ?
                     new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version') :
                     navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin.description;

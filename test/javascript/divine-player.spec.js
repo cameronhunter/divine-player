@@ -40,29 +40,34 @@ describe('DivinePlayer', function() {
       spyOn(DivinePlayer, 'getSupportedPlayer').andReturn(this.mockPlayer);
     });
 
-    DivinePlayer.options.forEach(function(option) {
+    $.each(DivinePlayer.options, function() {
+      var option = this;
+
       it('should set ' + option + ' property on video element', function() {
+        var video = document.createElement('video');
+
         var options = {};
-
-        this.video.removeAttribute(option);
-        expect(this.video.getAttribute(option)).toBeFalsy();
-
         options[option] = true;
-        DivinePlayer(this.video, options);
+        DivinePlayer(video, options);
 
-        expect(this.video.getAttribute(option)).toBeTruthy();
+        expect(video.hasAttribute(option)).toBeTruthy();
       });
 
       it('should remove the ' + option + ' property if present when value is overridden to false', function() {
-        var options = {};
+        jasmine.getFixtures().set(
+          '<video id="video" ' + option + '>' +
+            '<source src="/base/test/fixtures/video.mp4" type="video/mp4">' +
+          '</video>'
+        );
+        var video = document.getElementById('video');
 
-        this.video.setAttribute(option, true);
-        expect(this.video.getAttribute(option)).toBeTruthy();
+        var options = {};
+        expect(video.hasAttribute(option)).toBeTruthy();
 
         options[option] = false;
-        DivinePlayer(this.video, options);
+        DivinePlayer(video, options);
 
-        expect(this.video.getAttribute(option)).toBeFalsy();
+        expect(video.hasAttribute(option)).toBeFalsy();
       });
     });
   });

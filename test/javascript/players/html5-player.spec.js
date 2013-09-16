@@ -1,17 +1,4 @@
-/**
- * Issues
- *
- * 1. The HTML5 video element is unsupported in PhantomJS which
- *    makes things tricky to test in a headless environment.
- *    Link: https://github.com/ariya/phantomjs/wiki/Supported-Web-Standards#unsupported-features
- *
- * 2. Chrome isn't correctly triggering the 'ended' event on the video element.
- *    Link: https://code.google.com/p/chromium/issues/detail?id=157543
- */
-
 describe('HTML5Player', function() {
-
-  var isPhantomJS = /PhantomJS/.test(navigator.userAgent);
 
   beforeEach(function() {
     jasmine.getFixtures().set(
@@ -20,66 +7,58 @@ describe('HTML5Player', function() {
       '</video>'
     );
     this.video = document.getElementById('video');
-
-    this.android = {userAgentOverride: 'Android'};
-    this.iPad = {userAgentOverride: 'iPad'};
   });
 
-  describe('workarounds', function() {
+  describe('Android workarounds', function() {
+    cit("doesn't loop correctly, so we do it manually", /android/i.test(navigator.userAgent), function() {
+      var onReady = jasmine.createSpy('onReady');
+      spyOn(this.video, 'play').andCallThrough();
 
-    describe("Android doesn't loop correctly", function() {
+      runs(function() {
+        expect(this.video.hasAttribute('loop')).toBe(true);
+        player = new HTML5Player(this.video, this.android, onReady);
+        expect(this.video.loop).toBe(false);
+      });
 
-      // Issue #2
-      xcit('should loop manually', !isPhantomJS, function() {
-        var onReady = jasmine.createSpy('onReady');
-        spyOn(this.video, 'play').andCallThrough();
+      waitsFor(function() {
+        return onReady.callCount;
+      }, 'onReady to be called');
 
-        runs(function() {
-          expect(this.video.hasAttribute('loop')).toBe(true);
-          player = new HTML5Player(this.video, this.android, onReady);
-          expect(this.video.loop).toBe(false);
-        });
+      runs(function() {
+        player.play();
+      });
 
-        waitsFor(function() {
-          return onReady.callCount;
-        }, 'onReady to be called');
+      waitsFor(function() {
+        return this.video.ended;
+      }, this.video.duration * 1500, 'video to finish');
 
-        runs(function() {
-          player.play();
-        });
-
-        waitsFor(function() {
-          return this.video.ended;
-        }, 10000, 'video to finish');
-
-        runs(function() {
-          expect(this.video.play.callCount).toBe(2);
-          expect(this.video.play).toHaveBeenCalled();
-        });
+      runs(function() {
+        expect(this.video.play.callCount).toBe(2);
+        expect(this.video.play).toHaveBeenCalled();
       });
     });
-
-    describe("iPad won't show the play button if the controls are off", function() {
-      cit('should add and remove the controls manually', !isPhantomJS, function() {
-        expect(this.video.hasAttribute('controls')).toBe(false);
-
-        var player = new HTML5Player(this.video, this.iPad);
-
-        expect(this.video.controls).toBe(true);
-
-        runs(function() {
-          player.play();
-        });
-
-        waitsFor(function() {
-          return !this.video.controls;
-        });
-
-        runs(function() {
-          expect(this.video.controls).toBe(false);
-        });
-      });
-    });
-
   });
+
+  describe('iPad workarounds', function() {
+    cit("won't play unless controls are on, so we show them until play is hit", /ipad/i.test(navigator.userAgent), function() {
+      expect(this.video.hasAttribute('controls')).toBe(false);
+
+      var player = new HTML5Player(this.video, this.iPad);
+
+      expect(this.video.controls).toBe(true);
+
+      runs(function() {
+        player.play();
+      });
+
+      waitsFor(function() {
+        return !this.video.controls;
+      });
+
+      runs(function() {
+        expect(this.video.controls).toBe(false);
+      });
+    });
+  });
+
 });

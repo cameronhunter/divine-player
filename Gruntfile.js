@@ -3,6 +3,7 @@ module.exports = function(grunt) {
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
     source: 'src',
     release: 'release',
     test: 'test',
@@ -47,6 +48,7 @@ module.exports = function(grunt) {
           '<%= bower %>/jquery/jquery.js',
           '<%= bower %>/jasmine-jquery/lib/jasmine-jquery.js',
           '<%= test %>/jasmine-cit.js',
+          '<%= test %>/jasmine-helpers.js',
 
           // Behaviour specifications
           'test/javascript/**/*.spec.js',
@@ -56,10 +58,71 @@ module.exports = function(grunt) {
 
           // Needed for testing Flash player
           {pattern: '<%= release %>/swf/divine-player.swf', included: false, served: true}
-        ]
+        ],
+        sauceLabs: {
+          username: 'CameronHunter',
+          accessKey: '3037fecd-80d7-4fa4-a8c5-cdc3394f8867',
+          startConnect: false,
+          testName: '<%= pkg.name %> v<%= pkg.version %>'
+        },
+        // For more browsers on Sauce Labs see:
+        // https://saucelabs.com/docs/platforms/webdriver
+        customLaunchers: {
+          'SL_Chrome': {
+            base: 'SauceLabs',
+            browserName: 'chrome'
+          },
+          'SL_Firefox': {
+            base: 'SauceLabs',
+            browserName: 'firefox'
+          },
+          'SL_Safari': {
+            base: 'SauceLabs',
+            browserName: 'safari',
+            platform: 'OS X 10.8',
+            version: '6'
+          },
+          'SL_IE_8': {
+            base: 'SauceLabs',
+            browserName: 'internet explorer',
+            version: '8'
+          },
+          'SL_IE_9': {
+            base: 'SauceLabs',
+            browserName: 'internet explorer',
+            platform: 'windows 7',
+            version: '9'
+          },
+          'SL_IE_10': {
+            base: 'SauceLabs',
+            browserName: 'internet explorer',
+            platform: 'windows 8',
+            version: '10'
+          },
+          'SL_iPad': {
+            base: 'SauceLabs',
+            browserName: 'ipad',
+            platform: 'OS X 10.8',
+            version: '6',
+            'device-orientation': 'portrait'
+          },
+          'SL_iPhone': {
+            base: 'SauceLabs',
+            browserName: 'iphone',
+            platform: 'OS X 10.8',
+            version: '6',
+            'device-orientation': 'portrait'
+          },
+          'SL_Android': {
+            base: 'SauceLabs',
+            browserName: 'android',
+            platform: 'Linux',
+            version: '4',
+            'device-orientation': 'portrait'
+          }
+        }
       },
 
-      // Individual browsers
       headless: { browsers: ['PhantomJS'] },
       chrome: { browsers: ['Chrome'] },
       firefox: { browsers: ['Firefox'] },
@@ -67,10 +130,19 @@ module.exports = function(grunt) {
       opera: { browsers: ['Opera'] },
       safari: { browsers: ['Safari'] },
 
-      // Browsers grouped by OS
       linux: { browsers: ['Chrome', 'Firefox', 'Opera'] },
       osx: { browsers: ['Chrome', 'Firefox', 'Opera', 'Safari'] },
-      windows: { browsers: ['Chrome', 'Firefox', 'IE', 'Opera', 'Safari'] }
+      windows: { browsers: ['Chrome', 'Firefox', 'IE', 'Opera', 'Safari'] },
+
+      // SauceLabs. Max 2 concurrent browsers.
+      'sl-chrome': { browsers: ['SL_Chrome'] },
+      'sl-firefox': { browsers: ['SL_Firefox'] },
+      'sl-ie8': { browsers: ['SL_IE_8'] },
+      'sl-ie9': { browsers: ['SL_IE_9'] },
+      'sl-ie10': { browsers: ['SL_IE_10'] },
+      'sl-safari': { browsers: ['SL_Safari'] },
+      'sl-ios': { browsers: ['SL_iPhone', 'SL_iPad'] },
+      'sl-android': { browsers: ['SL_Android'] }
     },
 
     wrap: {
@@ -138,5 +210,16 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', [
     'karma:headless'
+  ]);
+
+  grunt.registerTask('test:remote', [
+    'karma:sl-chrome',
+    'karma:sl-firefox',
+    // 'karma:sl-ie8',
+    // 'karma:sl-ie9',
+    // 'karma:sl-ie10',
+    'karma:sl-safari',
+    'karma:sl-ios',
+    'karma:sl-android'
   ]);
 };

@@ -1,3 +1,18 @@
+/**
+ * Divine Player
+ *
+ * This component chooses a supported player from the PLAYERS array, it also
+ * adds and removes attributes to the <video> element depending on the options
+ * supplied by the user. An exception is thrown if no supported player is found,
+ * developers should handle this appropriately and fallback as necessary.
+ *
+ * Issues
+ *
+ * 1. IE9 throws a "Error: Not implemented" exception when adding or removing
+ *    'autoplay' and 'loop' properties. Perhaps because it doesn't make sense
+ *    to add these properties after element initialisation?
+ */
+
 var DivinePlayer = (function() {
 
   var PLAYERS = [HTML5Player, FlashPlayer];
@@ -9,7 +24,9 @@ var DivinePlayer = (function() {
     var options = options || {};
 
     for (var i=0, l=OPTIONS.length; i<l; i++) {
-      attr(el, OPTIONS[i], options[OPTIONS[i]]);
+      var property = OPTIONS[i];
+      var state = options[OPTIONS[i]];
+      if (state != null) attr(el, property, state);
     }
 
     var Player = require(DivinePlayer.getSupportedPlayer(el), 'No supported player found.');
@@ -33,13 +50,12 @@ var DivinePlayer = (function() {
     return condition;
   }
 
-  function attr(el, name, value) {
-    if (value == null) return;
-
-    if (value) {
-      el.setAttribute(name, value);
+  function attr(el, property, active) {
+    if (active) {
+      // Issue #1
+      try { el.setAttribute(property, property); } catch(e) {/* Ignore */}
     } else {
-      el.removeAttribute(name);
+      el.removeAttribute(property);
     }
   }
 }());

@@ -5,7 +5,8 @@
  *    SWF external interface from JS.
  *    Link: https://github.com/ariya/phantomjs/wiki/Supported-Web-Standards#unsupported-features
  */
-DivinePlayer.players.forEach(function(Player) {
+$.each(DivinePlayer.players, function() {
+  var Player = this;
 
   describe(Player.name, function() {
 
@@ -19,16 +20,17 @@ DivinePlayer.players.forEach(function(Player) {
     });
 
     describe('static functionality', function() {
-      it('should support Player.canPlay', function() {
+      it('should support #canPlay', function() {
         expect(Player.canPlay).toBeDefined();
       });
     });
 
-    describe('player instantiation', function() {
+    describe('construction', function() {
 
       // Issue #1
-      var isPhantomJSAndFlashPlayer = /PhantomJS/.test(navigator.userAgent) && Player.name === 'FlashPlayer';
-      cit('should call the onReady callback', !isPhantomJSAndFlashPlayer, function() {
+      var flashPlayerWithoutFlash = Player.name === 'FlashPlayer' && !flashSupported;
+
+      cit('should call the onReady callback', !flashPlayerWithoutFlash, function() {
         var player, onReady = jasmine.createSpy('onReady');
 
         runs(function() {
