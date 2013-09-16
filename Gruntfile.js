@@ -167,7 +167,16 @@ module.exports = function(grunt) {
       },
       build_swf: {
         cmd: 'mxmlc <%= actionscript %>/Player.as -o <%= temp %>/swf/divine-player.swf -use-network=false -static-link-runtime-shared-libraries=true'
-      }
+      },
+      check_for_sauce_connect: {
+        cmd: 'ps aux | grep Sauce-Connect.jar | grep -v grep',
+        callback: function(error) {
+          if (error) {
+            console.warn("You need to run Sauce Connect manually in the background while running these tests");
+            console.info("Instructions here: https://saucelabs.com/docs/connect");
+          }
+        }
+      },
     },
 
     copy: {
@@ -213,6 +222,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('test:remote', [
+    'exec:check_for_sauce_connect',
     'karma:sl-chrome',
     'karma:sl-firefox',
     'karma:sl-ie8',
