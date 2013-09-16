@@ -62,6 +62,8 @@ module.exports = function(grunt) {
         ],
 
         sauceLabs: {
+          username: 'CameronHunter',
+          accessKey: '2bf6bee8-218e-46f9-83e4-01b9d7c23ca4',
           startConnect: false,
           testName: '<%= pkg.name %> v<%= pkg.version %>'
         },
