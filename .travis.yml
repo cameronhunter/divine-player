@@ -1,20 +1,6 @@
-# Instructions for SauceLabs integration from: http://about.travis-ci.org/docs/user/addons/#Sauce-Connect
-
 language: node_js
-
 node_js:
   - "0.10"
-
-addons:
-  sauce_connect: true
-
-env:
-  global:
-    # SauceLabs Username
-    - secure: "qV2mR7M24EuEQisw8/D2Lkhy8vplG8X85X1e4f75yP/HEjzej9lc6KtbhszkKAFoOoSiOWiVAUQMzjw+ZFYVb+ickZLQwUpmUjXr4+DKnpN7zYpfhCc+urARARDmpak680R9s/gKMZy0lcYsl3rbBGLbDkGNjvEDhh4GvRM9gXg="
-    # SauceLabs Access Key
-    - secure: "ZTi6jFs1jzZRK3xKe7OCsML+wy6LTF3DxqjbCLcAchkgpkfZpZfxJLczddFi/oOH/iYAxhiW+SG/d8vtuip5Yx5EwvojUtQAMZFeZ5+FQZORp2Ber3MgprLgqk2CuiXtLE3uAdJnlQTI71FiqRGL691kEdxa4mDm0aAmj9wV7oM="
-
 before_script:
   - npm install -g bower grunt-cli
   - bower install
