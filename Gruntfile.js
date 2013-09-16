@@ -59,14 +59,13 @@ module.exports = function(grunt) {
           // Needed for testing Flash player
           {pattern: '<%= release %>/swf/divine-player.swf', included: false, served: true}
         ],
+
         sauceLabs: {
-          username: 'CameronHunter',
-          accessKey: '3037fecd-80d7-4fa4-a8c5-cdc3394f8867',
           startConnect: false,
           testName: '<%= pkg.name %> v<%= pkg.version %>'
         },
-        // For more browsers on Sauce Labs see:
-        // https://saucelabs.com/docs/platforms/webdriver
+
+        // For more SauceLabs browsers see: https://saucelabs.com/docs/platforms/webdriver
         customLaunchers: {
           'SL_Chrome': {
             base: 'SauceLabs',
@@ -134,7 +133,7 @@ module.exports = function(grunt) {
       osx: { browsers: ['Chrome', 'Firefox', 'Opera', 'Safari'] },
       windows: { browsers: ['Chrome', 'Firefox', 'IE', 'Opera', 'Safari'] },
 
-      // SauceLabs. Max 2 concurrent browsers.
+      // SauceLabs Open Sauce allows max 2 concurrent browsers.
       'sl-chrome': { browsers: ['SL_Chrome'] },
       'sl-firefox': { browsers: ['SL_Firefox'] },
       'sl-ie8': { browsers: ['SL_IE_8'] },
@@ -215,11 +214,11 @@ module.exports = function(grunt) {
   grunt.registerTask('test:remote', [
     'karma:sl-chrome',
     'karma:sl-firefox',
-    // 'karma:sl-ie8',
-    // 'karma:sl-ie9',
-    // 'karma:sl-ie10',
+    'karma:sl-ie8',
+    'karma:sl-ie9',
+    'karma:sl-ie10',
     'karma:sl-safari',
-    'karma:sl-ios',
-    'karma:sl-android'
+    'karma:sl-android',
+    'karma:sl-ios'
   ]);
 };
