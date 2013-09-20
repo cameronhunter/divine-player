@@ -72,5 +72,12 @@ var HTML5Player = (function() {
         el.play();
       }, false);
     }
+
+    /**
+     * Firefox and Opera need to be explicitly play for tests to pass.
+     */
+    if (el.hasAttribute('autoplay')) {
+      el.play();
+    }
   }
 }());

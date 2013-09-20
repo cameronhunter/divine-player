@@ -78,26 +78,6 @@ $.each(DivinePlayer.players, function() {
       });
     });
 
-    var createPlayer = function(video, properties, after) {
-      var player, onReady = jasmine.createSpy('onReady');
-
-      runs(function() {
-        $.each(properties, function() {
-          video.setAttribute(this, this);
-        });
-
-        player = new Player(video, {}, onReady);
-      });
-
-      waitsFor(function() {
-        return onReady.callCount;
-      });
-
-      runs(function() {
-        after(player);
-      });
-    };
-
     describe('initial properties', function() {
 
       beforeEach(function() {
@@ -111,7 +91,7 @@ $.each(DivinePlayer.players, function() {
 
         waitsFor(function() {
           return this.onReady.callCount;
-        });
+        }, "player to be ready");
 
         runs(function() {
           expect(this.player.muted()).toBe(false);
@@ -126,7 +106,7 @@ $.each(DivinePlayer.players, function() {
 
         waitsFor(function() {
           return this.onReady.callCount;
-        });
+        }, "player to be ready");
 
         runs(function() {
           expect(this.player.muted()).toBe(true);
@@ -140,7 +120,7 @@ $.each(DivinePlayer.players, function() {
 
         waitsFor(function() {
           return this.onReady.callCount;
-        });
+        }, "player to be ready");
 
         runs(function() {
           expect(this.player.paused()).toBe(true);
@@ -155,7 +135,7 @@ $.each(DivinePlayer.players, function() {
 
         waitsFor(function() {
           return this.onReady.callCount && !this.player.paused();
-        });
+        }, "player to be ready and start playing");
 
         runs(function() {
           expect(this.player.paused()).toBe(false);
@@ -170,7 +150,7 @@ $.each(DivinePlayer.players, function() {
 
         waitsFor(function() {
           return this.onReady.callCount;
-        });
+        }, "player to be ready");
       });
 
       cit('#paused', !isPhantomJS, function() {
