@@ -10,7 +10,7 @@ function cit(description, condition, test) {
   if (condition) {
     it.call(this, description, test);
   } else {
-    console.warn('Ignored', jasmine.getEnv().currentSuite.getFullName());
+    console.warn('Ignored', jasmine.getEnv().currentSuite.getFullName() + ' ' + description);
     xit.call(this, description, test);
   }
 }
