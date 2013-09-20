@@ -47,6 +47,8 @@ package {
       muted = loaderInfo.parameters.muted == "true";
       autoplay = loaderInfo.parameters.autoplay == "true";
 
+      videoPlaying = autoplay;
+
       if (posterUrl) {
         loadPoster();
       }
@@ -73,15 +75,17 @@ package {
     }
 
     private function mute(): void {
+      muted = true;
       stream.soundTransform = new SoundTransform(0);
     }
 
     private function unmute(): void {
+      muted = false;
       stream.soundTransform = new SoundTransform(1);
     }
 
     private function isMuted(): Boolean {
-      return stream.soundTransform.volume == 0;
+      return muted;
     }
 
     private function registerExternalMethods(): void {

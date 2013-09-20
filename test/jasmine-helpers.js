@@ -1,3 +1,5 @@
+var isPhantomJS = /PhantomJS/i.test(navigator.userAgent);
+
 var userAgent = (function() {
   console.info('User Agent: ' + navigator.userAgent);
   return navigator.userAgent;

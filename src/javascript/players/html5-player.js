@@ -2,6 +2,7 @@ var HTML5Player = (function() {
 
   function HTML5Player(el, options, onReady) {
     this.el = el;
+    this.el.muted = el.hasAttribute('muted');
     workarounds(this.el, navigator.userAgent);
     if (onReady) onReady(this);
   }

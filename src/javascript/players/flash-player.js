@@ -146,7 +146,7 @@ var FlashPlayer = (function(global) {
 
   // IE7 and below doesn't support hasAttribute
   function hasAttribute(el, attribute) {
-    return el.getAttribute(attribute) !== undefined;
+    return el.getAttribute(attribute) != null;
   }
 
   function override(original, custom) {

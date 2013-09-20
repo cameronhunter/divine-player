@@ -11,6 +11,11 @@ module.exports = function(grunt) {
     bower: 'bower_components',
     temp: '.tmp',
 
+    sauceLabs: {
+      username: "CameronHunter",
+      accessKey: "2bf6bee8-218e-46f9-83e4-01b9d7c23ca4"
+    },
+
     javascript: '<%= source %>/javascript',
     actionscript: '<%= source %>/actionscript',
 
@@ -62,8 +67,8 @@ module.exports = function(grunt) {
         ],
 
         sauceLabs: {
-          username: 'CameronHunter',
-          accessKey: '2bf6bee8-218e-46f9-83e4-01b9d7c23ca4',
+          username: "<%= sauceLabs.username %>",
+          accessKey: "<%= sauceLabs.accessKey %>",
           startConnect: false,
           testName: '<%= pkg.name %> v<%= pkg.version %>'
         },
@@ -136,15 +141,10 @@ module.exports = function(grunt) {
       osx: { browsers: ['Chrome', 'Firefox', 'Opera', 'Safari'] },
       windows: { browsers: ['Chrome', 'Firefox', 'IE', 'Opera', 'Safari'] },
 
-      // SauceLabs Open Sauce allows max 2 concurrent browsers.
-      'sl-chrome': { browsers: ['SL_Chrome'] },
-      'sl-firefox': { browsers: ['SL_Firefox'] },
-      'sl-ie8': { browsers: ['SL_IE_8'] },
-      'sl-ie9': { browsers: ['SL_IE_9'] },
-      'sl-ie10': { browsers: ['SL_IE_10'] },
-      'sl-safari': { browsers: ['SL_Safari'] },
-      'sl-ios': { browsers: ['SL_iPhone', 'SL_iPad'] },
-      'sl-android': { browsers: ['SL_Android'] }
+      // SauceLabs Open Sauce allows max 3 concurrent browsers.
+      'sl-ie': { browsers: ['SL_IE_8', 'SL_IE_9', 'SL_IE_10'] },
+      'sl-desktop': { browsers: ['SL_Chrome', 'SL_Firefox', 'SL_Safari'] },
+      'sl-mobile': { browsers: ['SL_iPhone', 'SL_iPad', 'SL_Android'] }
     },
 
     wrap: {
@@ -162,8 +162,8 @@ module.exports = function(grunt) {
         cmd: 'mxmlc --version',
         callback: function(error) {
           if (error) {
-            console.warn("Couldn't find Flex SDK on your path!");
-            console.info('You can download it here: http://sourceforge.net/adobe/flexsdk/wiki/Flex%20SDK/');
+            grunt.log.writeln("Couldn't find Flex SDK on your path!");
+            grunt.log.writeln('You can download it here: http://sourceforge.net/adobe/flexsdk/wiki/Flex%20SDK/');
           }
         }
       },
@@ -174,8 +174,10 @@ module.exports = function(grunt) {
         cmd: 'ps aux | grep Sauce-Connect.jar | grep -v grep',
         callback: function(error) {
           if (error) {
-            console.warn("You need to run Sauce Connect manually in the background while running these tests");
-            console.info("Instructions here: https://saucelabs.com/docs/connect");
+            grunt.log.writeln("You need to run Sauce Connect manually in the background while running these tests");
+            grunt.log.writeln("Instructions here: https://saucelabs.com/docs/connect\n");
+            grunt.log.writeln("If you have it already, run:");
+            grunt.log.writeln("java -jar Sauce-Connect.jar <%= sauceLabs.username %> <%= sauceLabs.accessKey %>\n");
           }
         }
       },
@@ -225,13 +227,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test:remote', [
     'exec:check_for_sauce_connect',
-    'karma:sl-chrome',
-    'karma:sl-firefox',
-    'karma:sl-ie8',
-    'karma:sl-ie9',
-    'karma:sl-ie10',
-    'karma:sl-safari',
-    'karma:sl-android',
-    'karma:sl-ios'
+    'karma:sl-desktop',
+    'karma:sl-ie',
+    'karma:sl-mobile'
   ]);
 };
