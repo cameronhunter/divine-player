@@ -25,25 +25,24 @@ $.each(DivinePlayer.players, function() {
       });
     });
 
-    describe('construction', function() {
+    // Issue #1
+    ignore('when testing the Flash player in a browser without flash', Player.name === 'FlashPlayer' && !flashSupported, function() {
+      describe('construction', function() {
+        it('should call the onReady callback', function() {
+          var player, onReady = jasmine.createSpy('onReady');
 
-      // Issue #1
-      var flashPlayerWithoutFlash = Player.name === 'FlashPlayer' && !flashSupported;
+          runs(function() {
+            player = new Player(this.video, {}, onReady);
+          });
 
-      cit('should call the onReady callback', !flashPlayerWithoutFlash, function() {
-        var player, onReady = jasmine.createSpy('onReady');
+          waitsFor(function() {
+            return onReady.callCount;
+          }, "onReady to be called");
 
-        runs(function() {
-          player = new Player(this.video, {}, onReady);
-        });
-
-        waitsFor(function() {
-          return onReady.callCount;
-        }, "onReady to be called");
-
-        runs(function() {
-          expect(onReady.callCount).toEqual(1);
-          expect(onReady).toHaveBeenCalledWith(player);
+          runs(function() {
+            expect(onReady.callCount).toEqual(1);
+            expect(onReady).toHaveBeenCalledWith(player);
+          });
         });
       });
     });
@@ -78,98 +77,100 @@ $.each(DivinePlayer.players, function() {
       });
     });
 
-    describe('initial properties', function() {
+    ignore('when PhantomJS', isPhantomJS, function() {
+      describe('initial properties', function() {
 
-      beforeEach(function() {
-        this.onReady = jasmine.createSpy('onReady');
+        beforeEach(function() {
+          this.onReady = jasmine.createSpy('onReady');
+        });
+
+        it("should not start muted if the muted property isn't present", function() {
+          runs(function() {
+            this.player = new Player(this.video, {}, this.onReady);
+          });
+
+          waitsFor(function() {
+            return this.onReady.callCount;
+          }, "player to be ready");
+
+          runs(function() {
+            expect(this.player.muted()).toBe(false);
+          });
+        });
+
+        it('should start muted if the muted property is present', function() {
+          runs(function() {
+            this.video.setAttribute('muted', 'muted');
+            this.player = new Player(this.video, {}, this.onReady);
+          });
+
+          waitsFor(function() {
+            return this.onReady.callCount;
+          }, "player to be ready");
+
+          runs(function() {
+            expect(this.player.muted()).toBe(true);
+          });
+        });
+
+        it("should not start playing if the autoplay property isn't present", function() {
+          runs(function() {
+            this.player = new Player(this.video, {}, this.onReady);
+          });
+
+          waitsFor(function() {
+            return this.onReady.callCount;
+          }, "player to be ready");
+
+          runs(function() {
+            expect(this.player.paused()).toBe(true);
+          });
+        });
+
+        it('should start playing if the autoplay property is present', function() {
+          runs(function() {
+            this.video.setAttribute('autoplay', 'autoplay');
+            this.player = new Player(this.video, {}, this.onReady);
+          });
+
+          waitsFor(function() {
+            return this.onReady.callCount && !this.player.paused();
+          }, "player to be ready and start playing");
+
+          runs(function() {
+            expect(this.player.paused()).toBe(false);
+          });
+        });
       });
 
-      cit("should not start muted if the muted property isn't present", !isPhantomJS, function() {
-        runs(function() {
+      describe('functionality and state', function() {
+        beforeEach(function() {
+          this.onReady = jasmine.createSpy('onReady');
           this.player = new Player(this.video, {}, this.onReady);
+
+          waitsFor(function() {
+            return this.onReady.callCount;
+          }, "player to be ready");
         });
 
-        waitsFor(function() {
-          return this.onReady.callCount;
-        }, "player to be ready");
-
-        runs(function() {
-          expect(this.player.muted()).toBe(false);
-        });
-      });
-
-      cit('should start muted if the muted property is present', !isPhantomJS, function() {
-        runs(function() {
-          this.video.setAttribute('muted', 'muted');
-          this.player = new Player(this.video, {}, this.onReady);
+        it('#paused', function() {
+          runs(function() {
+            expect(this.player.paused()).toBe(true);
+            this.player.play();
+            expect(this.player.paused()).toBe(false);
+            this.player.pause();
+            expect(this.player.paused()).toBe(true);
+          });
         });
 
-        waitsFor(function() {
-          return this.onReady.callCount;
-        }, "player to be ready");
-
-        runs(function() {
-          expect(this.player.muted()).toBe(true);
-        });
-      });
-
-      cit("should not start playing if the autoplay property isn't present", !isPhantomJS, function() {
-        runs(function() {
-          this.player = new Player(this.video, {}, this.onReady);
-        });
-
-        waitsFor(function() {
-          return this.onReady.callCount;
-        }, "player to be ready");
-
-        runs(function() {
-          expect(this.player.paused()).toBe(true);
-        });
-      });
-
-      cit('should start playing if the autoplay property is present', !isPhantomJS, function() {
-        runs(function() {
-          this.video.setAttribute('autoplay', 'autoplay');
-          this.player = new Player(this.video, {}, this.onReady);
-        });
-
-        waitsFor(function() {
-          return this.onReady.callCount && !this.player.paused();
-        }, "player to be ready and start playing");
-
-        runs(function() {
-          expect(this.player.paused()).toBe(false);
-        });
-      });
-    });
-
-    describe('functionality and state', function() {
-      beforeEach(function() {
-        this.onReady = jasmine.createSpy('onReady');
-        this.player = new Player(this.video, {}, this.onReady);
-
-        waitsFor(function() {
-          return this.onReady.callCount;
-        }, "player to be ready");
-      });
-
-      cit('#paused', !isPhantomJS, function() {
-        runs(function() {
-          expect(this.player.paused()).toBe(true);
-          this.player.play();
-          expect(this.player.paused()).toBe(false);
-          this.player.pause();
-          expect(this.player.paused()).toBe(true);
-        });
-      });
-
-      cit('#muted', !isPhantomJS, function() {
-        runs(function() {
-          expect(this.player.muted()).toBe(false);
-          this.player.mute();
-          expect(this.player.muted()).toBe(true);
-          this.player.unmute();
-          expect(this.player.muted()).toBe(false);
+        it('#muted', function() {
+          runs(function() {
+            expect(this.player.muted()).toBe(false);
+            this.player.mute();
+            expect(this.player.muted()).toBe(true);
+            this.player.unmute();
+            expect(this.player.muted()).toBe(false);
+          });
         });
       });
     });

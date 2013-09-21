@@ -9,8 +9,8 @@ describe('HTML5Player', function() {
     this.video = document.getElementById('video');
   });
 
-  describe('Android workarounds', function() {
-    cit("doesn't loop correctly, so we do it manually", /android/i.test(navigator.userAgent), function() {
+  when('is Android', /android/i.test(navigator.userAgent), function() {
+    it("doesn't loop correctly, so we do it manually", function() {
       var onReady = jasmine.createSpy('onReady');
       spyOn(this.video, 'play').andCallThrough();
 
@@ -39,8 +39,8 @@ describe('HTML5Player', function() {
     });
   });
 
-  describe('iPad workarounds', function() {
-    cit("won't play unless controls are on, so we show them until play is hit", /ipad/i.test(navigator.userAgent), function() {
+  when('is iPad', /ipad/i.test(navigator.userAgent), function() {
+    it("won't play unless controls are on, so we show them until play is hit", function() {
       expect(this.video.hasAttribute('controls')).toBe(false);
 
       var player = new HTML5Player(this.video, this.iPad);
