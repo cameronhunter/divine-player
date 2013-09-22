@@ -19,11 +19,19 @@ var FlashPlayer = (function(global) {
 
     if (!options.size) options.size = DEFAULT_SIZE;
 
+    var namespace = 'divinePlayer';
+    var unique = (new Date).getTime();
+    var callback = [namespace, 'onReady', unique].join('_');
+    var onError = [namespace, 'onError', unique].join('_');
+
     var self = this;
-    var callback = 'divinePlayer_onReady_' + (new Date).getTime();
-    if (onReady) {
+    if (callback) {
       global[callback] = function() { onReady(self); };
     }
+
+    global[onError] = function(code, description) {
+      throw {'name': 'ActionScript ' + code, 'message': description};
+    };
 
     var swf = override(el.getAttribute('data-fallback-player'), options.swf);
 
@@ -36,7 +44,8 @@ var FlashPlayer = (function(global) {
       loop: hasAttribute(el, 'loop'),
       poster: hasAttribute(el, 'poster') ? absolute(el.getAttribute('poster')) : undefined,
       video: getVideoUrl(el),
-      onReady: callback
+      onReady: callback,
+      onError: onError
     });
   }
 

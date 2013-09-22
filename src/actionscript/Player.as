@@ -117,10 +117,16 @@ package {
       connection.connect(null);
     }
 
-    private function netStatusHandler(event: NetStatusEvent): void {
-      switch (event.info.code) {
-        case "NetConnection.Connect.Success": connectStream(); break;
-        case "NetStream.Play.Stop": if (loop) stream.seek(0); break;
+    private function netStatusHandler(e: NetStatusEvent): void {
+      switch (e.info.code) {
+        case "NetConnection.Connect.Success":
+          connectStream(); break;
+        case "NetConnection.Connect.Failed":
+          throwError(e.info.code, e.info.description); break;
+        case "NetStream.Play.Stop":
+          if (loop) stream.seek(0); break;
+        default:
+          if (e.info.level == "error") throwError(e.info.code, e.info.description);
       }
     }
 
@@ -140,6 +146,13 @@ package {
       } else {
         videoPlaying = false;
         pause();
+      }
+    }
+
+    private function throwError(code: int, description: String): void {
+      var onError: String = loaderInfo.parameters.onError;
+      if (onError) {
+        ExternalInterface.call(onError, code, description);
       }
     }
 
