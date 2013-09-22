@@ -120,13 +120,21 @@ package {
     private function netStatusHandler(e: NetStatusEvent): void {
       switch (e.info.code) {
         case "NetConnection.Connect.Success":
-          connectStream(); break;
-        case "NetConnection.Connect.Failed":
-          throwError(e.info.code, e.info.description); break;
+          connectStream();
+          break;
         case "NetStream.Play.Stop":
-          if (loop) stream.seek(0); break;
+          if (loop) {
+            stream.seek(0);
+          }
+          break;
+        case "NetConnection.Connect.Failed":
+        case "NetStream.Play.StreamNotFound":
+          throwError(e.info.code, e.info.description);
+          break;
         default:
-          if (e.info.level == "error") throwError(e.info.code, e.info.description);
+          if (e.info.level == "error") {
+            throwError(e.info.code, e.info.description);
+          }
       }
     }
 
