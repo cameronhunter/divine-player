@@ -50,6 +50,9 @@ module.exports = function(grunt) {
           '<%= javascript %>/players/*.js',
           '<%= javascript %>/divine-player.js',
 
+          // Stub player for testing
+          '<%= test %>/javascript/players/stub-player.js',
+
           // Test libraries
           '<%= bower %>/jquery/jquery.js',
           '<%= bower %>/jasmine-jquery/lib/jasmine-jquery.js',
