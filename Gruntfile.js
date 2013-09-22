@@ -24,7 +24,7 @@ module.exports = function(grunt) {
         files: ['package.json', 'bower.json'],
         commit: true,
         commitMessage: 'Release v%VERSION%',
-        commitFiles: ['package.json', 'bower.json'], // '-a' for all files
+        commitFiles: ['-a'], // '-a' for all files
         createTag: true,
         tagName: 'v%VERSION%',
         tagMessage: 'Version %VERSION%',
@@ -208,12 +208,6 @@ module.exports = function(grunt) {
       swf: {
         files: [{expand: true, cwd: '<%= temp %>', src: 'swf/*', dest: '<%= release %>', filter: 'isFile'}]
       }
-    },
-
-    concurrent: {
-      build: {
-        tasks: ['build:js', 'build:swf']
-      }
     }
 
   });
@@ -222,7 +216,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean:build',
-    'concurrent:build',
+    'build:swf',
+    'build:js',
     'clean:temp'
   ]);
 
@@ -248,5 +243,25 @@ module.exports = function(grunt) {
     'karma:sl-desktop',
     'karma:sl-ie',
     'karma:sl-mobile'
+  ]);
+
+  grunt.registerTask('release', [
+    'build',
+    'bump'
+  ]);
+
+  grunt.registerTask('release:patch', [
+    'build',
+    'bump:patch'
+  ]);
+
+  grunt.registerTask('release:minor', [
+    'build',
+    'bump:minor'
+  ]);
+
+  grunt.registerTask('release:major', [
+    'build',
+    'bump:major'
   ]);
 };
