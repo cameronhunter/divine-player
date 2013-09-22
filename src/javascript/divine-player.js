@@ -30,8 +30,20 @@ var DivinePlayer = (function() {
     }
 
     var Player = require(DivinePlayer.getSupportedPlayer(el), 'No supported player found.');
+    var player = new Player(el, options, onReady);
 
-    return new Player(el, options, onReady);
+    if (options.allowPostMessage) {
+      addEventListener('message', function(message) {
+        switch(message.data) {
+          case 'play': player.play(); break;
+          case 'pause': player.pause(); break;
+          case 'mute': player.mute(); break;
+          case 'unmute': player.unmute(); break;
+        }
+      });
+    }
+
+    return player;
   }
 
   // Exposed for testing purposes.
@@ -56,6 +68,14 @@ var DivinePlayer = (function() {
       try { el.setAttribute(property, property); } catch(e) {/* Ignore */}
     } else {
       el.removeAttribute(property);
+    }
+  }
+
+  function addEventListener(event, fn) {
+    if (window.addEventListener) {
+      window.addEventListener(event, fn, false);
+    } else {
+      window.attachEvent('on' + event, fn);
     }
   }
 }());
