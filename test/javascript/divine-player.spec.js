@@ -102,6 +102,74 @@ describe('DivinePlayer', function() {
     });
   });
 
+  describe('location hash API', function() {
+    beforeEach(function() {
+      window.location.hash = '';
+      spyOn(DivinePlayer, 'getSupportedPlayer').andReturn(StubPlayer);
+      this.player = DivinePlayer(this.video, {allowHashMessage: true});
+    });
+
+    it('should play the video when "play" is set in the location hash', function() {
+      var play = spyOn(this.player, 'play');
+      runs(function() {
+        window.location.hash = 'play';
+      });
+
+      waitsFor(function() {
+        return play.callCount;
+      });
+
+      runs(function() {
+        expect(play).toHaveBeenCalled();
+      });
+    });
+
+    it('should pause the video when "pause" is set in the location hash', function() {
+      var pause = spyOn(this.player, 'pause');
+      runs(function() {
+        window.location.hash = 'pause';
+      });
+
+      waitsFor(function() {
+        return pause.callCount;
+      });
+
+      runs(function() {
+        expect(pause).toHaveBeenCalled();
+      });
+    });
+
+    it('should mute the video when "mute" is set in the location hash', function() {
+      var mute = spyOn(this.player, 'mute');
+      runs(function() {
+        window.location.hash = 'mute';
+      });
+
+      waitsFor(function() {
+        return mute.callCount;
+      });
+
+      runs(function() {
+        expect(mute).toHaveBeenCalled();
+      });
+    });
+
+    it('should unmute the video when "unmute" is set in the location hash', function() {
+      var unmute = spyOn(this.player, 'unmute');
+      runs(function() {
+        window.location.hash = 'unmute';
+      });
+
+      waitsFor(function() {
+        return unmute.callCount;
+      });
+
+      runs(function() {
+        expect(unmute).toHaveBeenCalled();
+      });
+    });
+  });
+
   describe('options', function() {
 
     beforeEach(function() {
@@ -136,6 +204,24 @@ describe('DivinePlayer', function() {
         DivinePlayer(video, options);
 
         expect(video.hasAttribute(option)).toBeFalsy();
+      });
+
+      it('should override the property if present in the location hash', function() {
+        jasmine.getFixtures().set(
+          '<video id="video">' +
+            '<source src="/base/test/fixtures/video.mp4" type="video/mp4">' +
+          '</video>'
+        );
+        var video = document.getElementById('video');
+
+        var options = {allowHashMessage: true};
+        expect(video.hasAttribute(option)).toBeFalsy();
+
+        window.location.hash = option;
+
+        DivinePlayer(video, options);
+
+        expect(video.hasAttribute(option)).toBeTruthy();
       });
     });
   });

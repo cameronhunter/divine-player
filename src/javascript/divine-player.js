@@ -23,6 +23,13 @@ var DivinePlayer = (function() {
 
     var options = options || {};
 
+    if (options.allowHashMessage) {
+      var hashOptions = window.location.hash.replace('#', '').split(',');
+      for (var i=0, l=hashOptions.length; i<l; i++) if (OPTIONS.indexOf(hashOptions[i]) >= 0) {
+        options[hashOptions[i]] = true;
+      }
+    }
+
     for (var i=0, l=OPTIONS.length; i<l; i++) {
       var property = OPTIONS[i];
       var state = options[OPTIONS[i]];
@@ -32,14 +39,15 @@ var DivinePlayer = (function() {
     var Player = require(DivinePlayer.getSupportedPlayer(el), 'No supported player found.');
     var player = new Player(el, options, onReady);
 
+    if (options.allowHashMessage) {
+      addEventListener('hashchange', function() {
+        handleCommand(window.location.hash.replace('#', ''), player);
+      });
+    }
+
     if (options.allowPostMessage) {
       addEventListener('message', function(message) {
-        switch(message.data) {
-          case 'play': player.play(); break;
-          case 'pause': player.pause(); break;
-          case 'mute': player.mute(); break;
-          case 'unmute': player.unmute(); break;
-        }
+        handleCommand(message.data, player);
       });
     }
 
@@ -76,6 +84,15 @@ var DivinePlayer = (function() {
       window.addEventListener(event, fn, false);
     } else {
       window.attachEvent('on' + event, fn);
+    }
+  }
+
+  function handleCommand(command, player) {
+    switch(command) {
+      case 'play': player.play(); break;
+      case 'pause': player.pause(); break;
+      case 'mute': player.mute(); break;
+      case 'unmute': player.unmute(); break;
     }
   }
 }());
