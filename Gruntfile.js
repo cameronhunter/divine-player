@@ -228,6 +228,12 @@ module.exports = function(grunt) {
     'copy:js'
   ]);
 
+  grunt.registerTask('build:js:unsafe', [
+    'uglify:build',
+    'wrap:build',
+    'copy:js'
+  ]);
+
   grunt.registerTask('build:swf', [
     'exec:check_for_mxmlc',
     'exec:build_swf',
