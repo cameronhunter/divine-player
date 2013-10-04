@@ -3,6 +3,8 @@ var HTML5Player = (function() {
   function HTML5Player(el, options, onReady) {
     this.el = el;
     this.el.muted = el.hasAttribute('muted');
+    this.el.width = options.size;
+    this.el.height = options.size;
     workarounds(this.el, navigator.userAgent);
     if (onReady) onReady(this);
   }
