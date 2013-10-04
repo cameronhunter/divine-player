@@ -3,8 +3,6 @@ var HTML5Player = (function() {
   function HTML5Player(el, options, onReady) {
     this.el = el;
     this.el.muted = el.hasAttribute('muted');
-    this.el.width = options.size;
-    this.el.height = options.size;
     workarounds(this.el, navigator.userAgent);
     if (onReady) onReady(this);
   }
@@ -79,7 +77,9 @@ var HTML5Player = (function() {
      * Firefox and Opera need to be explicitly play for tests to pass.
      */
     if (el.hasAttribute('autoplay')) {
+      el.controls = true;
       el.play();
+      el.controls = false;
     }
   }
 }());
