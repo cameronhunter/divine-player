@@ -39,7 +39,7 @@ describe('HTML5Player', function() {
     });
   });
 
-  when('is iPad', /ipad/i.test(navigator.userAgent), function() {
+  when('is not PhantomJS', !isPhantomJS, function() {
     it("won't play unless controls are on, so we show them until play is hit", function() {
       expect(this.video.hasAttribute('controls')).toBe(false);
 
