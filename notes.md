@@ -1,0 +1,1 @@
+Looping prevents ended event: http://stackoverflow.com/a/8375870

@@ -63,27 +63,25 @@ var HTML5Player = (function() {
     if (!el.hasAttribute('controls') && (/ipad/i.test(userAgent) || /android/i.test(userAgent))) {
       el.controls = true;
       el.addEventListener('play', function() {
-	el.controls = false;
+        el.controls = false;
       }, false);
     }
 
     /**
-     * Workaround for Android and Chrome not autoplaying when controls are
-     * off.
+     * In Android, the loop attribute prevents events being triggered on the
+     * video element, so we do it manually.
      *
-     * The iPad has a strange glitch where it won't show the play button if the
-     * controls are off. It also won't autoplay in any-way until the user
-     * presses the button.
+     * Link: http://stackoverflow.com/a/8375870
      */
     if (/android/i.test(userAgent)) {
       el.loop = false;
       el.addEventListener('ended', function() {
-	el.play();
+        el.play();
       }, false);
     }
 
     /**
-     * Firefox and Opera need to be explicitly play for tests to pass.
+     * Firefox and Opera require explicit play calls for autoplay tests to pass.
      */
     if (el.hasAttribute('autoplay')) {
       el.play();
