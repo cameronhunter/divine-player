@@ -53,13 +53,17 @@ var HTML5Player = (function() {
 
   function workarounds(el, userAgent) {
     /**
-     * There is a bug on android that causes the loop attribute to kill all
-     * events from the video player. So we do it manually.
+     * The iPad has a strange glitch where it won't show the play button if the
+     * controls are off. It also won't autoplay in any-way until the user
+     * presses the button.
+     *
+     * Android has an issue that the video disappears on play when controls
+     * aren't visible.
      */
-    if (/android/i.test(userAgent)) {
-      el.loop = false;
-      el.addEventListener('ended', function() {
-        el.play();
+    if (!el.hasAttribute('controls') && (/ipad/i.test(userAgent) || /android/i.test(userAgent))) {
+      el.controls = true;
+      el.addEventListener('play', function() {
+	el.controls = false;
       }, false);
     }
 
@@ -71,10 +75,12 @@ var HTML5Player = (function() {
      * controls are off. It also won't autoplay in any-way until the user
      * presses the button.
      */
-    el.controls = true;
-    el.addEventListener('play', function() {
-      el.controls = false;
-    }, false);
+    if (/android/i.test(userAgent)) {
+      el.loop = false;
+      el.addEventListener('ended', function() {
+	el.play();
+      }, false);
+    }
 
     /**
      * Firefox and Opera need to be explicitly play for tests to pass.
