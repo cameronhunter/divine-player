@@ -14,7 +14,7 @@
     ".travis.yml",
     "Gruntfile.js",
     "package.json",
-    "src/actionscript",
+    "src",
     "test/"
   ]
 }
