@@ -61,7 +61,8 @@ module.exports = function(grunt) {
     },
 
     clean: {
-      build: '<%= release %>',
+      js: '<%= release %>/js',
+      swf: '<%= release %>/swf',
       temp: '<%= temp %>'
     },
 
@@ -243,12 +244,11 @@ module.exports = function(grunt) {
   grunt.registerTask('server', ['connect:dev']);
 
   grunt.registerTask('server:release', [
-    'build',
+    'build:js',
     'connect:release'
   ]);
 
   grunt.registerTask('build', [
-    'clean:build',
     'build:swf',
     'build:js',
     'clean:temp'
@@ -256,12 +256,11 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build:js', [
     'test:headless',
-    'uglify:build',
-    'wrap:build',
-    'copy:js'
+    'build:js:skiptests'
   ]);
 
-  grunt.registerTask('build:js:unsafe', [
+  grunt.registerTask('build:js:skiptests', [
+    'clean:js',
     'uglify:build',
     'wrap:build',
     'copy:js'
@@ -269,6 +268,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build:swf', [
     'exec:check_for_mxmlc',
+    'clean:swf',
     'exec:build_swf',
     'copy:swf'
   ]);
