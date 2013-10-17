@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>divine-player</title>
+    <script src="/src/javascript/html5-video-shim.js"></script>
+  </head>
+  <body>
+
+    <div id="container">
+      <video id="video" autoplay muted loop preload="auto" poster="//v.cdn.vine.co/v/thumbs/2013/05/06/77B65BC0-7D9C-4C62-B94E-C4CDF7A2AE36-10636-000003939E707C90_1.1.mp4.jpg?versionId=8YIqyxEBZFLeqfieXspMsvVgAGyloJxs" data-fallback-player="/release/swf/divine-player.swf">
+        <source src="https://v.cdn.vine.co/v/videos/77B65BC0-7D9C-4C62-B94E-C4CDF7A2AE36-10636-000003939E707C90_1.1.mp4?versionId=dPfhRw7yHLzWOGxAdIHJhb.CBdOdadz." type="video/mp4">
+      </video>
+    </div>
+
+    <script src="/src/javascript/players/html5-player.js"></script>
+    <script src="/src/javascript/players/flash-player.js"></script>
+    <script src="/src/javascript/divine-player.js"></script>
+    <script>
+      (function() {
+        var video = document.getElementById('video');
+        var container = document.getElementById('container');
+
+        DivinePlayer(video, {size: 600}, function(player) {
+          container.onclick = function() {
+            player.paused() ? player.play() : player.pause();
+            return false;
+          };
+        });
+      }());
+    </script>
+  </body>
+</html>

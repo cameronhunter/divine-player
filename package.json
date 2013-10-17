@@ -11,6 +11,7 @@
     "grunt-bump": "latest",
     "grunt-concurrent": "latest",
     "grunt-contrib-clean": "latest",
+    "grunt-contrib-connect": "latest",
     "grunt-contrib-copy": "latest",
     "grunt-contrib-uglify": "latest",
     "grunt-exec": "latest",

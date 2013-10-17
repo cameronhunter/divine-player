@@ -19,6 +19,16 @@ module.exports = function(grunt) {
     javascript: '<%= source %>/javascript',
     actionscript: '<%= source %>/actionscript',
 
+    connect: {
+      server: {
+        options: {
+          port: 9001,
+          keepalive: true,
+          open: "http://localhost:9001/test/index.html"
+        }
+      }
+    },
+
     bump: {
       options: {
         files: ['package.json', 'bower.json'],
@@ -213,6 +223,8 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('default', ['build']);
+
+  grunt.registerTask('server', ['connect']);
 
   grunt.registerTask('build', [
     'clean:build',
