@@ -8,5 +8,13 @@
   "devDependencies": {
     "jasmine-jquery": "~1.5.8",
     "jquery": "~1.10.2"
-  }
+  },
+  "ignore": [
+    ".gitignore",
+    ".travis.yml",
+    "Gruntfile.js",
+    "package.json",
+    "src",
+    "test/"
+  ]
 }
