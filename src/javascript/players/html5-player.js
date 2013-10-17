@@ -53,12 +53,15 @@ var HTML5Player = (function() {
 
   function workarounds(el, userAgent) {
     /**
-     * The iPad has a strange glitch where it won't show the play button if the
-     * controls are off. It also won't autoplay in any-way until the user
-     * presses the button.
-     *
-     * Android has an issue that the video disappears on play when controls
-     * aren't visible.
+     * https://github.com/cameronhunter/divine-player/issues/1
+     */
+    if(el.hasAttribute('poster')) {
+      var poster = el.getAttribute('poster');
+      el.removeAttribute('poster');
+    }
+
+    /**
+     * https://github.com/cameronhunter/divine-player/issues/2
      */
     if (!el.hasAttribute('controls') && (/ipad/i.test(userAgent) || /android/i.test(userAgent))) {
       el.controls = true;
@@ -68,10 +71,7 @@ var HTML5Player = (function() {
     }
 
     /**
-     * In Android, the loop attribute prevents events being triggered on the
-     * video element, so we do it manually.
-     *
-     * Link: http://stackoverflow.com/a/8375870
+     * https://github.com/cameronhunter/divine-player/issues/3
      */
     if (/android/i.test(userAgent)) {
       el.loop = false;
