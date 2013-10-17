@@ -20,11 +20,27 @@ module.exports = function(grunt) {
     actionscript: '<%= source %>/actionscript',
 
     connect: {
-      server: {
+      options: {
+        port: 9001,
+        keepalive: true,
+      },
+      dev: {
         options: {
-          port: 9001,
-          keepalive: true,
-          open: "http://localhost:9001/test/index.html"
+          open: 'http://localhost:<%= connect.options.port %>/dev.html',
+          base: [
+            './test/integration', // dev.html
+            './src',              // javascript/
+            './release'           // swf/
+          ]
+        }
+      },
+      release: {
+        options: {
+          open: 'http://localhost:<%= connect.options.port %>/release.html',
+          base: [
+            './test/integration', // index.html
+            './release'           // js/ & swf/
+          ]
         }
       }
     },
@@ -76,16 +92,16 @@ module.exports = function(grunt) {
           '<%= javascript %>/divine-player.js',
 
           // Stub player for testing
-          '<%= test %>/javascript/players/stub-player.js',
+          '<%= test %>/specs/javascript/players/stub-player.js',
 
           // Test libraries
           '<%= bower %>/jquery/jquery.js',
           '<%= bower %>/jasmine-jquery/lib/jasmine-jquery.js',
-          '<%= test %>/jasmine-cit.js',
-          '<%= test %>/jasmine-helpers.js',
+          '<%= test %>/specs/jasmine-cit.js',
+          '<%= test %>/specs/jasmine-helpers.js',
 
           // Behaviour specifications
-          'test/javascript/**/*.spec.js',
+          'test/specs/javascript/**/*.spec.js',
 
           // Fixtures for use in tests cases
           {pattern: '<%= fixtures %>/*', included: false, served: true},
@@ -224,7 +240,12 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['build']);
 
-  grunt.registerTask('server', ['connect']);
+  grunt.registerTask('server', ['connect:dev']);
+
+  grunt.registerTask('server:release', [
+    'build',
+    'connect:release'
+  ]);
 
   grunt.registerTask('build', [
     'clean:build',
