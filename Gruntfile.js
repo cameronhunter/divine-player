@@ -21,6 +21,7 @@ module.exports = function(grunt) {
         hostname: '*',
         port: 9001,
         keepalive: true,
+        debug: true,
         open: 'http://localhost:<%= connect.options.port %>/embed'
       },
       dev: {
