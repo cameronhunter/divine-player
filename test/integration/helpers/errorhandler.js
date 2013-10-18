@@ -8,4 +8,6 @@ window.onerror = function(error, url, lineNumber) {
   var element = document.createElement('p');
   element.innerHTML = JSON.stringify(obj);
   document.body.appendChild(element);
+
+  return true;
 };
