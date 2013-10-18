@@ -44,4 +44,5 @@ Currently divine player is tested against:
 * [MDN - Media events](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Events/Media_events)
 * [Safari HTML5 Audio and Video Guide](https://developer.apple.com/library/safari/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/Device-SpecificConsiderations/Device-SpecificConsiderations.html#//apple_ref/doc/uid/TP40009523-CH5-SW4)
 * [HTML5 video iPad issues](http://blog.millermedeiros.com/html5-video-issues-on-the-ipad-and-how-to-solve-them/)
+* [Unsolved HTML5 video issues on iOS](http://blog.millermedeiros.com/unsolved-html5-video-issues-on-ios/)
 * [HTML5 Video: Everything I Needed to Know](http://jronallo.github.io/blog/html5-video-everything-i-needed-to-know/)
