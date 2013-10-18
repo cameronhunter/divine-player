@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>divine-player</title>
+    <script src="/helpers/errorhandler.js"></script>
     <script src="/js/html5-video-shim.min.js"></script>
   </head>
   <body style="margin: 0;">
@@ -14,19 +15,7 @@
       </video>
     </div>
 
-    <script src="/js/divine-player.min.js"></script>
-    <script>
-      (function() {
-        var video = document.getElementById('video');
-        var container = document.getElementById('container');
-
-        DivinePlayer(video, {size: 600}, function(player) {
-          container.onclick = function() {
-            player.paused() ? player.play() : player.pause();
-            return false;
-          };
-        });
-      }());
-    </script>
+    <script src="/divine-player.min.js"></script>
+    <script src="/app.js"></script>
   </body>
 </html>
