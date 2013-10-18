@@ -26,20 +26,20 @@ module.exports = function(grunt) {
       dev: {
         options: {
           base: [
-            './src',
-            './test/integration/dev',
-            './test/integration/common',
-            './bower_components'
+            '<%= source %>',
+            '<%= test %>/integration/dev',
+            '<%= test %>/integration/common',
+            '<%= bower %>'
           ]
         }
       },
       release: {
         options: {
           base: [
-            './release',
-            './test/integration/release',
-            './test/integration/common',
-            './bower_components'
+            '<%= release %>',
+            '<%= test %>/integration/release',
+            '<%= test %>/integration/common',
+            '<%= bower %>'
           ]
         }
       }
