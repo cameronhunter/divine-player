@@ -21,23 +21,24 @@ module.exports = function(grunt) {
         hostname: '*',
         port: 9001,
         keepalive: true,
+        open: 'http://localhost:<%= connect.options.port %>/embed'
       },
       dev: {
         options: {
-          open: 'http://localhost:<%= connect.options.port %>/dev.html',
           base: [
             './src',
-            './test/integration',
+            './test/integration/dev',
+            './test/integration/common',
             './bower_components'
           ]
         }
       },
       release: {
         options: {
-          open: 'http://localhost:<%= connect.options.port %>/release.html',
           base: [
             './release',
-            './test/integration',
+            './test/integration/release',
+            './test/integration/common',
             './bower_components'
           ]
         }
