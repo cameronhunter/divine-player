@@ -5,6 +5,9 @@
   "authors": [
     "Cameron Hunter <hello@cameronhunter.co.uk>"
   ],
+  "dependencies": {
+    "divine-player-swf": "~1.0.0"
+  },
   "devDependencies": {
     "jasmine-jquery": "~1.5.8",
     "jquery": "~1.10.2"

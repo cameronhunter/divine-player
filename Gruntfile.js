@@ -16,9 +16,6 @@ module.exports = function(grunt) {
       accessKey: "2bf6bee8-218e-46f9-83e4-01b9d7c23ca4"
     },
 
-    javascript: '<%= source %>/javascript',
-    actionscript: '<%= source %>/actionscript',
-
     connect: {
       options: {
         port: 9001,
@@ -28,9 +25,9 @@ module.exports = function(grunt) {
         options: {
           open: 'http://localhost:<%= connect.options.port %>/dev.html',
           base: [
-            './test/integration', // dev.html
-            './src',              // javascript/
-            './release'           // swf/
+            './src',
+            './test/integration',
+            './bower_components'
           ]
         }
       },
@@ -38,8 +35,9 @@ module.exports = function(grunt) {
         options: {
           open: 'http://localhost:<%= connect.options.port %>/release.html',
           base: [
-            './test/integration', // index.html
-            './release'           // js/ & swf/
+            './release',
+            './test/integration',
+            './bower_components'
           ]
         }
       }
@@ -61,21 +59,20 @@ module.exports = function(grunt) {
     },
 
     clean: {
-      js: '<%= release %>/js',
-      swf: '<%= release %>/swf',
+      release: '<%= release %>',
       temp: '<%= temp %>'
     },
 
     uglify: {
       build: {
         files: {
-          '<%= temp %>/js/divine-player.min.js': [
-            '<%= javascript %>/players/html5-player.js',
-            '<%= javascript %>/players/flash-player.js',
-            '<%= javascript %>/divine-player.js'
+          '<%= temp %>/divine-player.min.js': [
+            '<%= source %>/players/html5-player.js',
+            '<%= source %>/players/flash-player.js',
+            '<%= source %>/divine-player.js'
           ],
-          '<%= temp %>/js/html5-video-shim.min.js': [
-            '<%= javascript %>/html5-video-shim.js'
+          '<%= temp %>/html5-video-shim.min.js': [
+            '<%= source %>/html5-video-shim.js'
           ]
         }
       }
@@ -88,27 +85,27 @@ module.exports = function(grunt) {
         browserDisconnectTimeout: 5000,
         files: [
           // Code under test
-          '<%= javascript %>/html5-video-shim.js',
-          '<%= javascript %>/players/*.js',
-          '<%= javascript %>/divine-player.js',
+          '<%= source %>/html5-video-shim.js',
+          '<%= source %>/players/*.js',
+          '<%= source %>/divine-player.js',
 
           // Stub player for testing
-          '<%= test %>/specs/javascript/players/stub-player.js',
+          '<%= test %>/specs/players/stub-player.js',
 
           // Test libraries
           '<%= bower %>/jquery/jquery.js',
           '<%= bower %>/jasmine-jquery/lib/jasmine-jquery.js',
-          '<%= test %>/specs/jasmine-cit.js',
-          '<%= test %>/specs/jasmine-helpers.js',
+          '<%= test %>/specs/jasmine-helpers/jasmine-cit.js',
+          '<%= test %>/specs/jasmine-helpers/jasmine-helpers.js',
 
           // Behaviour specifications
-          'test/specs/javascript/**/*.spec.js',
+          'test/specs/**/*.spec.js',
 
           // Fixtures for use in tests cases
           {pattern: '<%= fixtures %>/*', included: false, served: true},
 
           // Needed for testing Flash player
-          {pattern: '<%= release %>/swf/divine-player.swf', included: false, served: true}
+          {pattern: '<%= bower %>/divine-player-swf/release/divine-player.swf', included: false, served: true}
         ],
 
         sauceLabs: {
@@ -194,8 +191,8 @@ module.exports = function(grunt) {
 
     wrap: {
       build: {
-        src: '<%= temp %>/js/divine-player.min.js',
-        dest: '<%= temp %>/js/divine-player.min.js',
+        src: '<%= temp %>/divine-player.min.js',
+        dest: '<%= temp %>/divine-player.min.js',
         options: {
           wrapper: ['var DivinePlayer = (function() {', 'return DivinePlayer;}());']
         }
@@ -203,18 +200,6 @@ module.exports = function(grunt) {
     },
 
     exec: {
-      check_for_mxmlc: {
-        cmd: 'mxmlc --version',
-        callback: function(error) {
-          if (error) {
-            grunt.log.writeln("Couldn't find Flex SDK on your path!");
-            grunt.log.writeln('You can download it here: http://sourceforge.net/adobe/flexsdk/wiki/Flex%20SDK/');
-          }
-        }
-      },
-      build_swf: {
-        cmd: 'mxmlc <%= actionscript %>/Player.as -o <%= temp %>/swf/divine-player.swf -use-network=false -static-link-runtime-shared-libraries=true'
-      },
       check_for_sauce_connect: {
         cmd: 'ps aux | grep Sauce-Connect.jar | grep -v grep',
         callback: function(error) {
@@ -225,15 +210,12 @@ module.exports = function(grunt) {
             grunt.log.writeln("java -jar Sauce-Connect.jar <%= sauceLabs.username %> <%= sauceLabs.accessKey %>\n");
           }
         }
-      },
+      }
     },
 
     copy: {
       js: {
-        files: [{expand: true, cwd: '<%= temp %>', src: 'js/*', dest: '<%= release %>', filter: 'isFile'}]
-      },
-      swf: {
-        files: [{expand: true, cwd: '<%= temp %>', src: 'swf/*', dest: '<%= release %>', filter: 'isFile'}]
+        files: [{expand: true, cwd: '<%= temp %>', src: '*', dest: '<%= release %>', filter: 'isFile'}]
       }
     }
 
@@ -244,33 +226,21 @@ module.exports = function(grunt) {
   grunt.registerTask('server', ['connect:dev']);
 
   grunt.registerTask('server:release', [
-    'build:js',
+    'build',
     'connect:release'
   ]);
 
   grunt.registerTask('build', [
-    'build:swf',
-    'build:js',
-    'clean:temp'
+    'test',
+    'build:skiptests'
   ]);
 
-  grunt.registerTask('build:js', [
-    'test:headless',
-    'build:js:skiptests'
-  ]);
-
-  grunt.registerTask('build:js:skiptests', [
-    'clean:js',
+  grunt.registerTask('build:skiptests', [
+    'clean:release',
     'uglify:build',
     'wrap:build',
-    'copy:js'
-  ]);
-
-  grunt.registerTask('build:swf', [
-    'exec:check_for_mxmlc',
-    'clean:swf',
-    'exec:build_swf',
-    'copy:swf'
+    'copy:js',
+    'clean:temp'
   ]);
 
   grunt.registerTask('test', [
