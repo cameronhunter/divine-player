@@ -41,6 +41,7 @@ Currently divine player is tested against:
 ## Useful Links
 * [WHATWG video element living spec](http://www.whatwg.org/specs/web-apps/current-work/multipage/the-video-element.html#the-video-element)
 * [MDN - HTMLMediaElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement)
+* [MDN - Media events](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Events/Media_events)
+* [Safari HTML5 Audio and Video Guide](https://developer.apple.com/library/safari/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/Device-SpecificConsiderations/Device-SpecificConsiderations.html#//apple_ref/doc/uid/TP40009523-CH5-SW4)
 * [HTML5 video iPad issues](http://blog.millermedeiros.com/html5-video-issues-on-the-ipad-and-how-to-solve-them/)
-* [Chrome looping issues](http://stackoverflow.com/a/8375870)
 * [HTML5 Video: Everything I Needed to Know](http://jronallo.github.io/blog/html5-video-everything-i-needed-to-know/)
