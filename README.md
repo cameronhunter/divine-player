@@ -3,7 +3,7 @@
 A very simple HTML5 video player that degrades to Flash if necessary.
 
 ## Building
-You can build the project using `grunt build`. This creates a `release` folder containing the minified javascript and the built SWF player.
+You can build the project using `grunt build`. This creates a `release` folder containing the minified javascript.
 
 ## Testing
 
