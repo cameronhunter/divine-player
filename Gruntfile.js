@@ -11,11 +11,6 @@ module.exports = function(grunt) {
     bower: "bower_components",
     temp: ".tmp",
 
-    sauceLabs: {
-      username: "CameronHunter",
-      accessKey: "2bf6bee8-218e-46f9-83e4-01b9d7c23ca4"
-    },
-
     connect: {
       options: {
         hostname: "*",
@@ -131,118 +126,22 @@ module.exports = function(grunt) {
 
     karma: {
       options: {
-        frameworks: ["jasmine"],
-        singleRun: true,
-        browserDisconnectTimeout: 5000,
-        files: [
-          // Code under test
-          "<%= source %>/html5-video-shim.js",
-          "<%= source %>/players/*.js",
-          "<%= source %>/divine-player.js",
-
-          // Stub player for testing
-          "<%= test %>/specs/players/stub-player.js",
-
-          // Test libraries
-          "<%= bower %>/jquery/jquery.js",
-          "<%= bower %>/jasmine-jquery/lib/jasmine-jquery.js",
-          "<%= test %>/specs/jasmine-helpers/jasmine-cit.js",
-          "<%= test %>/specs/jasmine-helpers/jasmine-helpers.js",
-
-          // Behaviour specifications
-          "test/specs/**/*.spec.js",
-
-          // Fixtures for use in tests cases
-          {pattern: "<%= fixtures %>/*", included: false, served: true},
-
-          // Needed for testing Flash player
-          {pattern: "<%= bower %>/divine-player-swf/release/divine-player.swf", included: false, served: true}
-        ],
-
-        sauceLabs: {
-          username: "<%= sauceLabs.username %>",
-          accessKey: "<%= sauceLabs.accessKey %>",
-          startConnect: false,
-          testName: "<%= pkg.name %> v<%= pkg.version %>"
-        },
-
-        // For more SauceLabs browsers see: https://saucelabs.com/docs/platforms/webdriver
-        customLaunchers: {
-          "SL_Chrome": {
-            base: "SauceLabs",
-            browserName: "chrome"
-          },
-          "SL_Firefox": {
-            base: "SauceLabs",
-            browserName: "firefox"
-          },
-          "SL_Safari": {
-            base: "SauceLabs",
-            browserName: "safari",
-            platform: "OS X 10.8",
-            version: "6"
-          },
-          "SL_IE_8": {
-            base: "SauceLabs",
-            browserName: "internet explorer",
-            version: "8"
-          },
-          "SL_IE_9": {
-            base: "SauceLabs",
-            browserName: "internet explorer",
-            platform: "windows 7",
-            version: "9"
-          },
-          "SL_IE_10": {
-            base: "SauceLabs",
-            browserName: "internet explorer",
-            platform: "windows 8",
-            version: "10"
-          },
-          "SL_iPad": {
-            base: "SauceLabs",
-            browserName: "ipad",
-            platform: "OS X 10.8",
-            version: "6",
-            "device-orientation": "portrait"
-          },
-          "SL_iPhone": {
-            base: "SauceLabs",
-            browserName: "iphone",
-            platform: "OS X 10.8",
-            version: "6",
-            "device-orientation": "portrait"
-          },
-          "SL_Android": {
-            base: "SauceLabs",
-            browserName: "android",
-            platform: "Linux",
-            version: "4",
-            "device-orientation": "portrait"
-          }
-        }
+        configFile: "karma.specs.conf.js"
       },
-
-      headless: { browsers: ["PhantomJS"] },
-      chrome: { browsers: ["Chrome"] },
-      firefox: { browsers: ["Firefox"] },
-      ie: { browsers: ["IE"] },
-      opera: { browsers: ["Opera"] },
-      safari: { browsers: ["Safari"] },
-
-      linux: { browsers: ["Chrome", "Firefox", "Opera"] },
-      osx: { browsers: ["Chrome", "Firefox", "Opera", "Safari"] },
-      windows: { browsers: ["Chrome", "Firefox", "IE", "Opera", "Safari"] },
-
-      // SauceLabs Open Sauce allows max 3 concurrent browsers.
-      "sl-ie": { browsers: ["SL_IE_8", "SL_IE_9", "SL_IE_10"] },
-      "sl-desktop": { browsers: ["SL_Chrome", "SL_Firefox", "SL_Safari"] },
-      "sl-mobile": { browsers: ["SL_iPhone", "SL_iPad", "SL_Android"] }
+      "specs": { browsers: ["PhantomJS"] },
+      "specs-chrome": { browsers: ["Chrome"] },
+      "specs-firefox": { browsers: ["Firefox"] },
+      "specs-ie": { browsers: ["IE"] },
+      "specs-opera": { browsers: ["Opera"] },
+      "specs-safari": { browsers: ["Safari"] },
+      "specs-sl-ie": { browsers: ["SL_IE_8", "SL_IE_9", "SL_IE_10"] },
+      "specs-sl-desktop": { browsers: ["SL_Chrome", "SL_Firefox", "SL_Safari"] },
+      "specs-sl-mobile": { browsers: ["SL_iPhone", "SL_iPad", "SL_Android"] }
     }
   });
 
   grunt.registerTask("default", ["build"]);
-
+  grunt.registerTask("test", ["karma:specs"]);
   grunt.registerTask("server", ["connect:dev"]);
 
   grunt.registerTask("server:release", [
@@ -264,34 +163,10 @@ module.exports = function(grunt) {
     "clean:temp"
   ]);
 
-  grunt.registerTask("test", [
-    "karma:headless"
-  ]);
-
   grunt.registerTask("test:remote", [
     "exec:check_for_sauce_connect",
-    "karma:sl-desktop",
-    "karma:sl-ie",
-    "karma:sl-mobile"
-  ]);
-
-  grunt.registerTask("release", [
-    "build",
-    "bump"
-  ]);
-
-  grunt.registerTask("release:patch", [
-    "build",
-    "bump:patch"
-  ]);
-
-  grunt.registerTask("release:minor", [
-    "build",
-    "bump:minor"
-  ]);
-
-  grunt.registerTask("release:major", [
-    "build",
-    "bump:major"
+    "karma:specs-sl-desktop",
+    "karma:specs-sl-ie",
+    "karma:specs-sl-mobile"
   ]);
 };
