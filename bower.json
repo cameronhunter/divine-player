@@ -16,8 +16,9 @@
     ".gitignore",
     ".travis.yml",
     "Gruntfile.js",
+    "karma.*.conf.js",
     "package.json",
-    "src",
+    "src/",
     "test/"
   ]
 }
