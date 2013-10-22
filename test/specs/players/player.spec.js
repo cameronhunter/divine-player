@@ -12,7 +12,7 @@ $.each(DivinePlayer.players, function() {
 
     beforeEach(function() {
       jasmine.getFixtures().set(
-	'<video id="video" preload="auto" poster="/base/test/fixtures/poster.jpg" data-fallback-player="/base/bower_components/divine-player-swf/release/divine-player.swf">' +
+        '<video id="video" preload="auto" poster="/base/test/fixtures/poster.jpg" data-fallback-player="/base/bower_components/divine-player-swf/release/divine-player.swf">' +
           '<source src="/base/test/fixtures/video.mp4" type="video/mp4">' +
         '</video>'
       );
