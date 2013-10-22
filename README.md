@@ -2,6 +2,24 @@
 
 A very simple HTML5 video player that degrades to Flash if necessary. The flash player source (and build tools) are in the [divine-player-swf](https://github.com/cameronhunter/divine-player-swf) repository.
 
+## Dev setup
+
+1. Clone the repository:
+```
+git clone git@github.com:cameronhunter/divine-player.git
+```
+
+2. Install the dependencies (from the project root):
+```
+npm install -g bower grunt-cli
+npm install && bower install
+```
+
+3. Run the tests to ensure you've got everything setup correctly:
+```
+grunt test
+```
+
 ## Building
 You can build the project using `grunt build`. This creates a `release` folder containing the minified javascript.
 
