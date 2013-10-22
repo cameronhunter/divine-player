@@ -1,27 +1,29 @@
 # Divine Player [![Build Status](https://secure.travis-ci.org/cameronhunter/divine-player.png)](http://travis-ci.org/cameronhunter/divine-player)
 
-A very simple HTML5 video player that degrades to Flash if necessary.
+A very simple HTML5 video player that degrades to Flash if necessary. The flash player source (and build tools) are in the [divine-player-swf](https://github.com/cameronhunter/divine-player-swf) repository.
 
 ## Building
 You can build the project using `grunt build`. This creates a `release` folder containing the minified javascript.
 
 ## Testing
 
-<dl>
-  <dt><code>grunt karma:headless</code></dt>
-  <dd>Runs the tests in phantomjs</dd>
+Runs the tests in phantomjs:
+```shell
+grunt karma:specs
+```
 
-  <dt><code>grunt karma:[chrome|firefox|ie|opera|safari]</code></dt>
-  <dd>Runs the tests locally in a real browser (which must be installed)</dd>
+Runs the tests in a real browser:
+```shell
+grunt karma:specs-[chrome|firefox|ie|opera|safari]
+```
 
-  <dt><code>grunt karma:[linux|osx|windows]</code></dt>
-  <dd>Runs the tests locally in multiple browsers (which must be installed) common to an operating system</dd>
-</dl>
-
+Runs the tests locally in multiple browsers (which must be installed) common to an operating system:
+```shell
+grunt karma:specs-[linux|osx|windows]
+```
 
 ## Testing using Sauce Labs
 You can also run the tests remotely in real browsers with [Sauce Labs](https://saucelabs.com/u/CameronHunter):
-
 ```
 grunt test:remote
 ```
@@ -37,6 +39,15 @@ Currently divine player is tested against:
 * Safari 6 (OSX 10.8)
 * iPad (iOS6)
 * iPhone (iOS6)
+
+## Integration test page
+
+You can run a server which creates an `<iframe>` embedding the player in a page:
+```shell
+grunt server
+```
+
+This starts a [local server](http://localhost:9001/embed) which you can point devices to.
 
 ## Useful Links
 * [WHATWG video element living spec](http://www.whatwg.org/specs/web-apps/current-work/multipage/the-video-element.html#the-video-element)
