@@ -52,10 +52,14 @@ var HTML5Player = (function() {
   return HTML5Player;
 
   function workarounds(el, userAgent) {
+    var iPad = /ipad/i.test(userAgent);
+    var android = /android/i.test(userAgent);
+    var chrome = /chrome/i.test(userAgent);
+
     /**
      * https://github.com/cameronhunter/divine-player/issues/1
      */
-    if(el.hasAttribute('poster')) {
+    if(el.hasAttribute('poster') && chrome) {
       var poster = el.getAttribute('poster');
       el.removeAttribute('poster');
     }
@@ -63,7 +67,7 @@ var HTML5Player = (function() {
     /**
      * https://github.com/cameronhunter/divine-player/issues/2
      */
-    if (!el.hasAttribute('controls') && (/ipad/i.test(userAgent) || /android/i.test(userAgent))) {
+    if (!el.hasAttribute('controls') && (iPad || android)) {
       el.controls = true;
       el.addEventListener('play', function() {
         el.controls = false;
@@ -73,7 +77,7 @@ var HTML5Player = (function() {
     /**
      * https://github.com/cameronhunter/divine-player/issues/3
      */
-    if (/android/i.test(userAgent)) {
+    if (android) {
       el.loop = false;
       el.addEventListener('ended', function() {
         el.play();
