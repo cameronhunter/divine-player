@@ -12,7 +12,7 @@ describe('HTML5Player', function() {
   /**
    * https://github.com/cameronhunter/divine-player/issues/1
    */
-  when('is Chrome', /chrome/i.test(navigator.userAgent), function() {
+  when('is desktop Chrome', (chrome && !mobile), function() {
     it("disappears if a poster is present - either due to preload attribute or no controls, so we remove the poster", function() {
       expect(this.video.hasAttribute('poster')).toBe(true);
 
@@ -25,7 +25,7 @@ describe('HTML5Player', function() {
   /**
    * https://github.com/cameronhunter/divine-player/issues/2
    */
-  when('is Android or iPad', (/android/i.test(navigator.userAgent) || /iPad/i.test(navigator.userAgent)), function() {
+  when('is Android or iPad', (android || iPad), function() {
     it("won't play unless controls are on, so we show them until play is hit", function() {
       expect(this.video.hasAttribute('controls')).toBe(false);
 
@@ -50,7 +50,7 @@ describe('HTML5Player', function() {
   /**
    * https://github.com/cameronhunter/divine-player/issues/3
    */
-  when('is Android', /android/i.test(navigator.userAgent), function() {
+  when('is Android', android, function() {
     it("doesn't loop correctly, so we do it manually", function() {
       var onReady = jasmine.createSpy('onReady');
       spyOn(this.video, 'play').andCallThrough();

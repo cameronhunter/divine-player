@@ -53,13 +53,16 @@ var HTML5Player = (function() {
 
   function workarounds(el, userAgent) {
     var iPad = /ipad/i.test(userAgent);
+    var iPhone = /ipad/i.test(userAgent);
     var android = /android/i.test(userAgent);
     var chrome = /chrome/i.test(userAgent);
+
+    var mobile = iPad || iPhone || android;
 
     /**
      * https://github.com/cameronhunter/divine-player/issues/1
      */
-    if(el.hasAttribute('poster') && chrome) {
+    if(el.hasAttribute('poster') && chrome && !mobile) {
       var poster = el.getAttribute('poster');
       el.removeAttribute('poster');
     }

@@ -1,4 +1,10 @@
+// User agent matchers
 var isPhantomJS = /PhantomJS/i.test(navigator.userAgent);
+var iPad = /iPad/i.test(navigator.userAgent);
+var iPhone = /iPhone/i.test(navigator.userAgent);
+var android = /android/i.test(navigator.userAgent);
+var chrome = /chrome/i.test(navigator.userAgent);
+var mobile = iPad || iPhone || android;
 
 var userAgent = (function() {
   console.info('User Agent: ' + navigator.userAgent);
