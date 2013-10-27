@@ -2,8 +2,8 @@ var HTML5Player = (function() {
 
   function HTML5Player(el, options, onReady) {
     this.el = el;
-    this.el.width = options.size;
-    this.el.height = options.size;
+    this.el.width = options.width;
+    this.el.height = options.height;
     this.el.muted = el.hasAttribute('muted');
     workarounds(this.el, navigator.userAgent);
     if (onReady) onReady(this);

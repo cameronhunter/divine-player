@@ -17,7 +17,8 @@ var FlashPlayer = (function(global) {
   // TODO: Select the mp4 instead of just the first source
   function FlashPlayer(el, options, onReady) {
 
-    if (!options.size) options.size = DEFAULT_SIZE;
+    if (!options.width) options.width = DEFAULT_SIZE;
+    if (!options.height) options.height = DEFAULT_SIZE;
 
     var namespace = 'divinePlayer';
     var unique = (new Date).getTime();
@@ -38,7 +39,8 @@ var FlashPlayer = (function(global) {
     if (!swf) throw 'SWF url must be specified.';
 
     this.swf = embed(swf, el, {
-      size: options.size,
+      width: options.width,
+      height: options.height,
       autoplay: hasAttribute(el, 'autoplay'),
       muted: hasAttribute(el, 'muted'),
       loop: hasAttribute(el, 'loop'),
@@ -133,8 +135,8 @@ var FlashPlayer = (function(global) {
     var attributes = attrs({
       id: el.id,
       data: swf,
-      width: options.size,
-      height: options.size,
+      width: options.width,
+      height: options.height,
       type: 'application/x-shockwave-flash'
     });
 

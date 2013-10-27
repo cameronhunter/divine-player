@@ -143,6 +143,25 @@ $.each(DivinePlayer.players, function() {
         });
       });
 
+      describe('video size', function() {
+        beforeEach(function() {
+          this.onReady = jasmine.createSpy('onReady');
+          this.player = new Player(this.video, {width: 600, height: 300}, this.onReady);
+
+          waitsFor(function() {
+            return this.onReady.callCount;
+          }, "player to be ready");
+        });
+
+        it('should have the correct width and height on the player element', function() {
+          runs(function() {
+            var element = document.getElementById('video');
+            expect(element.width + '').toEqual('600');
+            expect(element.height + '').toEqual('300');
+          });
+        });
+      });
+
       describe('functionality and state', function() {
         beforeEach(function() {
           this.onReady = jasmine.createSpy('onReady');
