@@ -19,7 +19,9 @@ var DivinePlayer = (function() {
   var OPTIONS = ['autoplay', 'controls', 'loop', 'muted'];
 
   function DivinePlayer(el, options, onReady) {
-    require(el, 'Element must be defined.');
+    if (DEBUG) {
+      require(el, 'Element must be defined.');
+    }
 
     var options = options || {};
 
@@ -36,7 +38,12 @@ var DivinePlayer = (function() {
       if (state != null) attr(el, property, state);
     }
 
-    var Player = require(DivinePlayer.getSupportedPlayer(el), 'No supported player found.');
+    var Player = DivinePlayer.getSupportedPlayer(el);
+
+    if (DEBUG) {
+      require(Player, 'No supported player found.');
+    }
+
     var player = new Player(el, options, onReady);
 
     if (options.allowHashMessage) {
@@ -54,9 +61,11 @@ var DivinePlayer = (function() {
     return player;
   }
 
-  // Exposed for testing purposes.
-  DivinePlayer.players = PLAYERS;
-  DivinePlayer.options = OPTIONS;
+  if (DEBUG) {
+    DivinePlayer.players = PLAYERS;
+    DivinePlayer.options = OPTIONS;
+  }
+
   DivinePlayer.getSupportedPlayer = function(video) {
     for (var i=0, l=PLAYERS.length; i<l; i++) if (PLAYERS[i].canPlay(video)) {
       return PLAYERS[i];

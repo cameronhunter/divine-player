@@ -6,15 +6,13 @@ module.exports = function (config) {
   config.set({
     frameworks: ["jasmine"],
     singleRun: true,
-    reporters: ['spec'],
     browserDisconnectTimeout: 5000,
     files: [
       "test/specs/jasmine-helpers/jasmine-test.js",
 
       // Code under test
-      "src/html5-video-shim.js",
-      "src/players/*.js",
-      "src/divine-player.js",
+      "release/html5-video-shim.min.js",
+      "release/divine-player.debug.js",
 
       // Stub player for testing
       "test/specs/players/stub-player.js",

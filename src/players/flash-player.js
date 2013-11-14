@@ -31,12 +31,14 @@ var FlashPlayer = (function(global) {
     }
 
     global[onError] = function(code, description) {
-      throw {'name': 'ActionScript ' + code, 'message': description};
+      if (DEBUG) throw {'name': 'ActionScript ' + code, 'message': description};
     };
 
     var swf = override(el.getAttribute('data-fallback-player'), options.swf);
 
-    if (!swf) throw 'SWF url must be specified.';
+    if (DEBUG) {
+      if (!swf) throw 'SWF url must be specified.';
+    }
 
     this.swf = embed(swf, el, {
       width: options.width,

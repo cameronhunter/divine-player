@@ -97,10 +97,36 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      options: {
+        report: 'gzip',
+        mangle: {
+          except: ['DivinePlayer', 'HTML5Player', 'FlashPlayer', 'ImagePlayer']
+        }
+      },
       build: {
+        options: {
+          compress: {
+            global_defs: {
+              DEBUG: false
+            }
+          }
+        },
         files: {
           "<%= temp %>/divine-player.min.js": "<%= temp %>/divine-player.js",
           "<%= temp %>/html5-video-shim.min.js": "<%= source %>/html5-video-shim.js"
+        }
+      },
+      debug: {
+        options: {
+          beautify: true,
+          compress: {
+            global_defs: {
+              DEBUG: true
+            }
+          }
+        },
+        files: {
+          "<%= temp %>/divine-player.debug.js": "<%= temp %>/divine-player.js",
         }
       }
     },
@@ -137,7 +163,11 @@ module.exports = function(grunt) {
       "specs-safari": { browsers: ["Safari"] },
       "specs-sl-ie": { browsers: ["SL_IE_8", "SL_IE_9", "SL_IE_10"] },
       "specs-sl-desktop": { browsers: ["SL_Chrome", "SL_Firefox", "SL_Safari"] },
-      "specs-sl-mobile": { browsers: ["SL_iPhone", "SL_iPad", "SL_Android"] }
+      "specs-sl-mobile": { browsers: ["SL_iPhone", "SL_iPad", "SL_Android"] },
+      "specs-release": {
+        configFile: "karma.specs-release.conf.js",
+        browsers: ["PhantomJS"]
+      }
     }
   });
 
@@ -160,8 +190,14 @@ module.exports = function(grunt) {
     "concat",
     "wrap:build",
     "uglify:build",
+    "uglify:debug",
     "copy",
     "clean:temp"
+  ]);
+
+  grunt.registerTask("test:release", [
+    "build:debug",
+    "karma:specs-release"
   ]);
 
   grunt.registerTask("test:remote", [

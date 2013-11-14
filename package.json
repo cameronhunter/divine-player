@@ -27,7 +27,8 @@
     "karma-phantomjs-launcher": "latest",
     "karma-safari-launcher": "latest",
     "karma-sauce-launcher": "latest",
-    "matchdep": "latest"
+    "karma-spec-reporter": "latest",
+    "matchdep": "latest",
   },
   "engines": {
     "node": ">=0.10.0"
