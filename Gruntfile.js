@@ -91,7 +91,7 @@ module.exports = function(grunt) {
         src: "<%= temp %>/divine-player.js",
         dest: "<%= temp %>/divine-player.js",
         options: {
-          wrapper: ["var DivinePlayer = (function() {", "return DivinePlayer;}());"]
+          wrapper: ["var DivinePlayer = (function(DEBUG) {", "return DivinePlayer;}(this['DEBUG'] || false));"]
         }
       }
     },

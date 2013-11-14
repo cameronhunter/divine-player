@@ -1,4 +1,4 @@
-var DivinePlayer = function() {
+var DivinePlayer = function(a) {
     var HTML5Player = function() {
         function HTML5Player(b, c, d) {
             this.el = b, this.el.width = c.width || b.videoWidth, this.el.height = c.height || b.videoHeight, 
@@ -39,87 +39,87 @@ var DivinePlayer = function() {
         }, HTML5Player.fn.muted = function() {
             return this.el.muted;
         }, HTML5Player;
-    }(), FlashPlayer = function(a) {
-        function FlashPlayer(d, e, f) {
-            e.width || (e.width = k), e.height || (e.height = k);
-            var g = "divinePlayer", l = new Date().getTime(), m = [ g, "onReady", l ].join("_"), n = [ g, "onError", l ].join("_"), o = this;
-            m && (a[m] = function() {
-                f(o);
-            }), a[n] = function(a, b) {
-                throw {
-                    name: "ActionScript " + a,
-                    message: b
+    }(), FlashPlayer = function(b) {
+        function FlashPlayer(e, f, g) {
+            f.width || (f.width = l), f.height || (f.height = l);
+            var h = "divinePlayer", m = new Date().getTime(), n = [ h, "onReady", m ].join("_"), o = [ h, "onError", m ].join("_"), p = this;
+            n && (b[n] = function() {
+                g(p);
+            }), b[o] = function(b, c) {
+                if (a) throw {
+                    name: "ActionScript " + b,
+                    message: c
                 };
             };
-            var p = j(d.getAttribute("data-fallback-player"), e.swf);
-            if (!p) throw "SWF url must be specified.";
-            this.swf = h(p, d, {
-                width: e.width,
-                height: e.height,
-                autoplay: i(d, "autoplay"),
-                muted: i(d, "muted"),
-                loop: i(d, "loop"),
-                poster: i(d, "poster") ? b(d.getAttribute("poster")) : void 0,
-                video: c(d),
-                onReady: m,
-                onError: n
+            var q = k(e.getAttribute("data-fallback-player"), f.swf);
+            if (a && !q) throw "SWF url must be specified.";
+            this.swf = i(q, e, {
+                width: f.width,
+                height: f.height,
+                autoplay: j(e, "autoplay"),
+                muted: j(e, "muted"),
+                loop: j(e, "loop"),
+                poster: j(e, "poster") ? c(e.getAttribute("poster")) : void 0,
+                video: d(e),
+                onReady: n,
+                onError: o
             });
         }
-        function b(a) {
+        function c(a) {
             return 0 === (a || "").indexOf("//") ? document.location.protocol + a : a;
         }
-        function c(a) {
-            var c = a.getElementsByTagName("source");
-            return c.length ? b(c[0].src) : void 0;
-        }
         function d(a) {
-            return g(a, function(a, b) {
+            var b = a.getElementsByTagName("source");
+            return b.length ? c(b[0].src) : void 0;
+        }
+        function e(a) {
+            return h(a, function(a, b) {
                 return a + '="' + b + '"';
             }, " ");
         }
-        function e(a) {
-            return g(a, function(a, b) {
-                return "<param " + d({
+        function f(a) {
+            return h(a, function(a, b) {
+                return "<param " + e({
                     name: a,
                     value: b
                 }) + " />";
             }, "\n");
         }
-        function f(a) {
-            return g(a, function(a, b) {
+        function g(a) {
+            return h(a, function(a, b) {
                 return a + "=" + encodeURIComponent(b);
             }, "&");
         }
-        function g(a, b, c) {
+        function h(a, b, c) {
             var d = [];
             for (var e in a) a.hasOwnProperty(e) && d.push(b(e, a[e]));
             return d.join(c);
         }
-        function h(a, b, c) {
-            var g = d({
+        function i(a, b, c) {
+            var d = e({
                 id: b.id,
                 data: a,
                 width: c.width,
                 height: c.height,
                 type: "application/x-shockwave-flash"
-            }), h = e({
+            }), h = f({
                 movie: a,
                 allowScriptAccess: "always",
                 allowNetworking: "all",
                 wmode: "opaque",
                 quality: "high",
                 bgcolor: "#000000",
-                flashvars: f(c)
+                flashvars: g(c)
             });
-            return b.outerHTML = "<object " + g + ">" + h + "</object>", document.getElementById(b.id);
-        }
-        function i(a, b) {
-            return null != a.getAttribute(b);
+            return b.outerHTML = "<object " + d + ">" + h + "</object>", document.getElementById(b.id);
         }
         function j(a, b) {
+            return null != a.getAttribute(b);
+        }
+        function k(a, b) {
             return null == b ? a : b;
         }
-        var k = 150;
+        var l = 150;
         return FlashPlayer.name = FlashPlayer.name || "FlashPlayer", FlashPlayer.canPlay = function() {
             try {
                 if (/MSIE 10/i.test(navigator.userAgent)) return !1;
@@ -167,36 +167,36 @@ var DivinePlayer = function() {
             return this._muted;
         }, ImagePlayer;
     }(), DivinePlayer = function() {
-        function DivinePlayer(e, g, h) {
-            a(e, "Element must be defined.");
-            var g = g || {};
-            if (g.allowHashMessage) for (var i = window.location.hash.replace("#", "").split(","), j = 0, k = i.length; k > j; j++) f.indexOf(i[j]) >= 0 && (g[i[j]] = !0);
-            for (var j = 0, k = f.length; k > j; j++) {
-                var l = f[j], m = g[f[j]];
-                null != m && b(e, l, m);
+        function DivinePlayer(f, h, i) {
+            a && b(f, "Element must be defined.");
+            var h = h || {};
+            if (h.allowHashMessage) for (var j = window.location.hash.replace("#", "").split(","), k = 0, l = j.length; l > k; k++) g.indexOf(j[k]) >= 0 && (h[j[k]] = !0);
+            for (var k = 0, l = g.length; l > k; k++) {
+                var m = g[k], n = h[g[k]];
+                null != n && c(f, m, n);
             }
-            var n = DivinePlayer.getSupportedPlayer(e);
-            a(n, "No supported player found.");
-            var o = new n(e, g, h);
-            return g.allowHashMessage && c("hashchange", function() {
-                d(window.location.hash.replace("#", ""), o);
-            }), g.allowPostMessage && c("message", function(a) {
-                d(a.data, o);
-            }), o;
+            var o = DivinePlayer.getSupportedPlayer(f);
+            a && b(o, "No supported player found.");
+            var p = new o(f, h, i);
+            return h.allowHashMessage && d("hashchange", function() {
+                e(window.location.hash.replace("#", ""), p);
+            }), h.allowPostMessage && d("message", function(a) {
+                e(a.data, p);
+            }), p;
         }
-        function a(a, b) {
+        function b(a, b) {
             if (!a) throw b || "Requirement isn't fullfilled";
             return a;
         }
-        function b(a, b, c) {
+        function c(a, b, c) {
             if (c) try {
                 a.setAttribute(b, b);
             } catch (d) {} else a.removeAttribute(b);
         }
-        function c(a, b) {
+        function d(a, b) {
             window.addEventListener ? window.addEventListener(a, b, !1) : window.attachEvent("on" + a, b);
         }
-        function d(a, b) {
+        function e(a, b) {
             switch (a) {
               case "play":
                 b.play();
@@ -214,10 +214,10 @@ var DivinePlayer = function() {
                 b.unmute();
             }
         }
-        var e = [ HTML5Player, FlashPlayer, ImagePlayer ], f = [ "autoplay", "controls", "loop", "muted" ];
-        return DivinePlayer.players = e, DivinePlayer.options = f, DivinePlayer.getSupportedPlayer = function(a) {
-            for (var b = 0, c = e.length; c > b; b++) if (e[b].canPlay(a)) return e[b];
+        var f = [ HTML5Player, FlashPlayer, ImagePlayer ], g = [ "autoplay", "controls", "loop", "muted" ];
+        return a && (DivinePlayer.players = f, DivinePlayer.options = g), DivinePlayer.getSupportedPlayer = function(a) {
+            for (var b = 0, c = f.length; c > b; b++) if (f[b].canPlay(a)) return f[b];
         }, DivinePlayer;
     }();
     return DivinePlayer;
-}();
+}(this.DEBUG || !1);

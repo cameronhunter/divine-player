@@ -1,4 +1,4 @@
-var DivinePlayer = (function() {
+var DivinePlayer = (function(DEBUG) {
 
 /******************************************************************************
  * src/players/html5-player.js
@@ -456,4 +456,4 @@ var DivinePlayer = (function() {
   }
 }());
 
-return DivinePlayer;}());
+return DivinePlayer;}(this['DEBUG'] || false));
