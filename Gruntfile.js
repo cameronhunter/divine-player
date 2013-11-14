@@ -79,6 +79,7 @@ module.exports = function(grunt) {
         src: [
           "<%= source %>/players/html5-player.js",
           "<%= source %>/players/flash-player.js",
+          "<%= source %>/players/image-player.js",
           "<%= source %>/divine-player.js"
         ],
         dest: "<%= temp %>/divine-player.js"
