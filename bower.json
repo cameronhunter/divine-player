@@ -18,6 +18,7 @@
     "Gruntfile.js",
     "karma.*.conf.js",
     "package.json",
+    "release/*.debug.*"
     "src/",
     "test/"
   ]
