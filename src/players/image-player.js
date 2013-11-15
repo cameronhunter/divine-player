@@ -5,7 +5,7 @@
  * It would be awesome if this player showed a GIF rather than the poster. It
  * would provide the best possible end-user experience.
  */
-var ImagePlayer = (function() {
+var ImagePlayer = (function(DEBUG) {
 
   function ImagePlayer(el, options, onReady) {
     this._playing = hasAttribute(el, 'autoplay');
@@ -58,4 +58,4 @@ var ImagePlayer = (function() {
   function hasAttribute(el, attribute) {
     return el.getAttribute(attribute) != null;
   }
-}());
+}(window['DEBUG'] || false));

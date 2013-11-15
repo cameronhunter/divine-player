@@ -10,7 +10,7 @@
  *           Link: https://code.google.com/p/swfobject/issues/detail?id=667
  */
 
-var FlashPlayer = (function(global) {
+var FlashPlayer = (function(global, DEBUG) {
 
   var DEFAULT_SIZE = 150;
 
@@ -164,4 +164,4 @@ var FlashPlayer = (function(global) {
   function override(original, custom) {
     return custom == null ? original : custom;
   }
-}(this));
+}(this, window['DEBUG'] || false));

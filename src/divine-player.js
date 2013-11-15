@@ -13,7 +13,7 @@
  *    to add these properties after element initialisation?
  */
 
-var DivinePlayer = (function() {
+var DivinePlayer = (function(DEBUG) {
 
   var PLAYERS = [HTML5Player, FlashPlayer, ImagePlayer];
   var OPTIONS = ['autoplay', 'controls', 'loop', 'muted'];
@@ -104,4 +104,4 @@ var DivinePlayer = (function() {
       case 'unmute': player.unmute(); break;
     }
   }
-}());
+}(window['DEBUG'] || false));

@@ -1,4 +1,4 @@
-var HTML5Player = (function() {
+var HTML5Player = (function(DEBUG) {
 
   function HTML5Player(el, options, onReady) {
     this.el = el;
@@ -94,4 +94,4 @@ var HTML5Player = (function() {
       el.play();
     }
   }
-}());
+}(window['DEBUG'] || false));
