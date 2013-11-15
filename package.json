@@ -1,7 +1,7 @@
 {
   "name": "divine-player",
   "description": "A very simple HTML5 video player that degrades to Flash if necessary",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "authors": [
     "Cameron Hunter <hello@cameronhunter.co.uk>"
   ],
