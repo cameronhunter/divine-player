@@ -1,10 +1,10 @@
-var DivinePlayer = (function(DEBUG) {
+var DivinePlayer = (function() {
 
 /******************************************************************************
  * src/players/html5-player.js
  ******************************************************************************/
 
-var HTML5Player = (function() {
+var HTML5Player = (function(DEBUG) {
 
   function HTML5Player(el, options, onReady) {
     this.el = el;
@@ -100,7 +100,7 @@ var HTML5Player = (function() {
       el.play();
     }
   }
-}());
+}(window['DEBUG'] || false));
 
 
 /******************************************************************************
@@ -119,7 +119,7 @@ var HTML5Player = (function() {
  *           Link: https://code.google.com/p/swfobject/issues/detail?id=667
  */
 
-var FlashPlayer = (function(global) {
+var FlashPlayer = (function(global, DEBUG) {
 
   var DEFAULT_SIZE = 150;
 
@@ -130,9 +130,9 @@ var FlashPlayer = (function(global) {
     if (!options.height) options.height = DEFAULT_SIZE;
 
     var namespace = 'divinePlayer';
-    var unique = (new Date).getTime();
-    var callback = [namespace, 'onReady', unique].join('_');
-    var onError = [namespace, 'onError', unique].join('_');
+    var callbackId = (new Date).getTime();
+    var callback = [namespace, 'onReady', callbackId].join('_');
+    var onError = [namespace, 'onError', callbackId].join('_');
 
     var self = this;
     if (callback) {
@@ -157,8 +157,7 @@ var FlashPlayer = (function(global) {
       loop: hasAttribute(el, 'loop'),
       poster: hasAttribute(el, 'poster') ? absolute(el.getAttribute('poster')) : undefined,
       video: getVideoUrl(el),
-      onReady: callback,
-      onError: onError
+      callbackId: callbackId
     });
   }
 
@@ -274,7 +273,7 @@ var FlashPlayer = (function(global) {
   function override(original, custom) {
     return custom == null ? original : custom;
   }
-}(this));
+}(this, window['DEBUG'] || false));
 
 
 /******************************************************************************
@@ -288,7 +287,7 @@ var FlashPlayer = (function(global) {
  * It would be awesome if this player showed a GIF rather than the poster. It
  * would provide the best possible end-user experience.
  */
-var ImagePlayer = (function() {
+var ImagePlayer = (function(DEBUG) {
 
   function ImagePlayer(el, options, onReady) {
     this._playing = hasAttribute(el, 'autoplay');
@@ -341,7 +340,7 @@ var ImagePlayer = (function() {
   function hasAttribute(el, attribute) {
     return el.getAttribute(attribute) != null;
   }
-}());
+}(window['DEBUG'] || false));
 
 
 /******************************************************************************
@@ -363,7 +362,7 @@ var ImagePlayer = (function() {
  *    to add these properties after element initialisation?
  */
 
-var DivinePlayer = (function() {
+var DivinePlayer = (function(DEBUG) {
 
   var PLAYERS = [HTML5Player, FlashPlayer, ImagePlayer];
   var OPTIONS = ['autoplay', 'controls', 'loop', 'muted'];
@@ -454,6 +453,6 @@ var DivinePlayer = (function() {
       case 'unmute': player.unmute(); break;
     }
   }
-}());
+}(window['DEBUG'] || false));
 
-return DivinePlayer;}(this['DEBUG'] || false));
+return DivinePlayer;}());

@@ -1,4 +1,4 @@
-var DivinePlayer = function(a) {
+var DivinePlayer = function() {
     var HTML5Player = function() {
         function HTML5Player(b, c, d) {
             this.el = b, this.el.width = c.width || b.videoWidth, this.el.height = c.height || b.videoHeight, 
@@ -39,20 +39,20 @@ var DivinePlayer = function(a) {
         }, HTML5Player.fn.muted = function() {
             return this.el.muted;
         }, HTML5Player;
-    }(), FlashPlayer = function(b) {
+    }(window.DEBUG || !1), FlashPlayer = function(a, b) {
         function FlashPlayer(e, f, g) {
             f.width || (f.width = l), f.height || (f.height = l);
             var h = "divinePlayer", m = new Date().getTime(), n = [ h, "onReady", m ].join("_"), o = [ h, "onError", m ].join("_"), p = this;
-            n && (b[n] = function() {
+            n && (a[n] = function() {
                 g(p);
-            }), b[o] = function(b, c) {
-                if (a) throw {
-                    name: "ActionScript " + b,
+            }), a[o] = function(a, c) {
+                if (b) throw {
+                    name: "ActionScript " + a,
                     message: c
                 };
             };
             var q = k(e.getAttribute("data-fallback-player"), f.swf);
-            if (a && !q) throw "SWF url must be specified.";
+            if (b && !q) throw "SWF url must be specified.";
             this.swf = i(q, e, {
                 width: f.width,
                 height: f.height,
@@ -61,8 +61,7 @@ var DivinePlayer = function(a) {
                 loop: j(e, "loop"),
                 poster: j(e, "poster") ? c(e.getAttribute("poster")) : void 0,
                 video: d(e),
-                onReady: n,
-                onError: o
+                callbackId: m
             });
         }
         function c(a) {
@@ -140,7 +139,7 @@ var DivinePlayer = function(a) {
         }, FlashPlayer.fn.muted = function() {
             return this.swf.divineMuted();
         }, FlashPlayer;
-    }(this), ImagePlayer = function() {
+    }(this, window.DEBUG || !1), ImagePlayer = function() {
         function ImagePlayer(c, d, e) {
             this._playing = b(c, "autoplay"), this._muted = b(c, "muted"), a(c, d, c.getAttribute("poster")), 
             e && e(this);
@@ -166,7 +165,7 @@ var DivinePlayer = function(a) {
         }, ImagePlayer.fn.muted = function() {
             return this._muted;
         }, ImagePlayer;
-    }(), DivinePlayer = function() {
+    }(window.DEBUG || !1), DivinePlayer = function(a) {
         function DivinePlayer(f, h, i) {
             a && b(f, "Element must be defined.");
             var h = h || {};
@@ -218,6 +217,6 @@ var DivinePlayer = function(a) {
         return a && (DivinePlayer.players = f, DivinePlayer.options = g), DivinePlayer.getSupportedPlayer = function(a) {
             for (var b = 0, c = f.length; c > b; b++) if (f[b].canPlay(a)) return f[b];
         }, DivinePlayer;
-    }();
+    }(window.DEBUG || !1);
     return DivinePlayer;
-}(this.DEBUG || !1);
+}();
