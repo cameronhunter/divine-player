@@ -21,9 +21,9 @@ var FlashPlayer = (function(global) {
     if (!options.height) options.height = DEFAULT_SIZE;
 
     var namespace = 'divinePlayer';
-    var unique = (new Date).getTime();
-    var callback = [namespace, 'onReady', unique].join('_');
-    var onError = [namespace, 'onError', unique].join('_');
+    var callbackId = (new Date).getTime();
+    var callback = [namespace, 'onReady', callbackId].join('_');
+    var onError = [namespace, 'onError', callbackId].join('_');
 
     var self = this;
     if (callback) {
@@ -48,8 +48,7 @@ var FlashPlayer = (function(global) {
       loop: hasAttribute(el, 'loop'),
       poster: hasAttribute(el, 'poster') ? absolute(el.getAttribute('poster')) : undefined,
       video: getVideoUrl(el),
-      onReady: callback,
-      onError: onError
+      callbackId: callbackId
     });
   }
 
