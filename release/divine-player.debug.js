@@ -41,27 +41,23 @@ var DivinePlayer = function() {
         }, HTML5Player;
     }(window.DEBUG || !1), FlashPlayer = function(a, b) {
         function FlashPlayer(e, f, g) {
-            f.width || (f.width = l), f.height || (f.height = l);
-            var h = "divinePlayer", m = new Date().getTime(), n = [ h, "onReady", m ].join("_"), o = [ h, "onError", m ].join("_"), p = this;
-            n && (a[n] = function() {
-                g(p);
-            }), a[o] = function(a, c) {
-                if (b) throw {
-                    name: "ActionScript " + a,
-                    message: c
+            if (f.width || (f.width = l), f.height || (f.height = l), e.id || (e.id = "dp" + new Date().getTime()), 
+            g) {
+                var h = this, n = [ m, e.id, "onReady" ].join("_");
+                a[n] = function() {
+                    g(h);
                 };
-            };
-            var q = k(e.getAttribute("data-fallback-player"), f.swf);
-            if (b && !q) throw "SWF url must be specified.";
-            this.swf = i(q, e, {
+            }
+            var o = k(e.getAttribute("data-fallback-player"), f.swf);
+            if (b && !o) throw "SWF url must be specified.";
+            this.swf = i(o, e, {
                 width: f.width,
                 height: f.height,
                 autoplay: j(e, "autoplay"),
                 muted: j(e, "muted"),
                 loop: j(e, "loop"),
                 poster: j(e, "poster") ? c(e.getAttribute("poster")) : void 0,
-                video: d(e),
-                callbackId: m
+                video: d(e)
             });
         }
         function c(a) {
@@ -118,7 +114,7 @@ var DivinePlayer = function() {
         function k(a, b) {
             return null == b ? a : b;
         }
-        var l = 150;
+        var l = 150, m = "divinePlayer";
         return FlashPlayer.name = FlashPlayer.name || "FlashPlayer", FlashPlayer.canPlay = function() {
             try {
                 if (/MSIE 10/i.test(navigator.userAgent)) return !1;

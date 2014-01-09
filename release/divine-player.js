@@ -122,26 +122,20 @@ var HTML5Player = (function(DEBUG) {
 var FlashPlayer = (function(global, DEBUG) {
 
   var DEFAULT_SIZE = 150;
+  var NAMESPACE = 'divinePlayer';
 
   // TODO: Select the mp4 instead of just the first source
   function FlashPlayer(el, options, onReady) {
 
     if (!options.width) options.width = DEFAULT_SIZE;
     if (!options.height) options.height = DEFAULT_SIZE;
+    if (!el.id) el.id = 'dp' + (new Date).getTime();
 
-    var namespace = 'divinePlayer';
-    var callbackId = (new Date).getTime();
-    var callback = [namespace, 'onReady', callbackId].join('_');
-    var onError = [namespace, 'onError', callbackId].join('_');
-
-    var self = this;
-    if (callback) {
-      global[callback] = function() { onReady(self); };
+    if (onReady) {
+      var self = this;
+      var onReadyCallback = [NAMESPACE, el.id, 'onReady'].join('_');
+      global[onReadyCallback] = function() { onReady(self); };
     }
-
-    global[onError] = function(code, description) {
-      if (DEBUG) throw {'name': 'ActionScript ' + code, 'message': description};
-    };
 
     var swf = override(el.getAttribute('data-fallback-player'), options.swf);
 
@@ -156,8 +150,7 @@ var FlashPlayer = (function(global, DEBUG) {
       muted: hasAttribute(el, 'muted'),
       loop: hasAttribute(el, 'loop'),
       poster: hasAttribute(el, 'poster') ? absolute(el.getAttribute('poster')) : undefined,
-      video: getVideoUrl(el),
-      callbackId: callbackId
+      video: getVideoUrl(el)
     });
   }
 
